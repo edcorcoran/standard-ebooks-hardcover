@@ -1,0 +1,15 @@
+services:
+  se-hardcover:
+    build: .
+    image: se-hardcover:latest
+    container_name: se-hardcover
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      # Keep state on the mounted volume regardless of .env.
+      STATE_DB_PATH: /app/data/se_hardcover.sqlite3
+      HEARTBEAT_PATH: /app/data/heartbeat
+    volumes:
+      - ./data:/app/data
+    # Default command (watch) comes from the image; override for one-off runs:
+    #   docker compose run --rm se-hardcover backfill --dry-run

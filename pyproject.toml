@@ -1,0 +1,47 @@
+[project]
+name = "se-hardcover"
+version = "0.1.0"
+description = "Sync Standard Ebooks releases into Hardcover.app (backfill + auto-sync daemon)"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "Ed Corcoran" }]
+keywords = ["standard-ebooks", "hardcover", "books", "graphql", "sync"]
+dependencies = [
+    "httpx>=0.27",
+    "beautifulsoup4>=4.12",
+    "feedparser>=6.0",
+    "typer>=0.12",
+    "pydantic>=2.7",
+    "pydantic-settings>=2.3",
+    "pillow>=10.3",
+]
+
+[project.optional-dependencies]
+web = ["fastapi>=0.110", "uvicorn>=0.29"]
+dev = ["pytest>=8.2", "ruff>=0.5", "respx>=0.21", "fastapi>=0.110", "uvicorn>=0.29"]
+
+[project.scripts]
+se-hardcover = "se_hardcover.cli:app"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/se_hardcover"]
+# Ship the web UI's static asset inside the package.
+artifacts = ["src/se_hardcover/web/*.html"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "W"]
+# B008: Typer uses function calls (Option/Argument) as parameter defaults by design.
+ignore = ["E501", "B008"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "."]

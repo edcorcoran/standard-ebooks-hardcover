@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>se-hardcover · review</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --panel: #fff; --border: #e2e5ea; --ink: #1a1d21;
+    --muted: #6b7280; --accent: #2b6cb0; --good: #2f855a; --bad: #c53030;
+    --chip: #eef2f7;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14171a; --panel: #1d2126; --border: #2c313a; --ink: #e6e8eb;
+      --muted: #9aa3af; --accent: #63b3ed; --good: #68d391; --bad: #fc8181;
+      --chip: #262c34;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+    font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  header { position: sticky; top: 0; z-index: 5; background: var(--panel);
+    border-bottom: 1px solid var(--border); padding: 12px 20px;
+    display: flex; align-items: center; gap: 16px; }
+  header h1 { font-size: 16px; margin: 0; font-weight: 650; }
+  .tabs { display: flex; gap: 4px; margin-left: auto; }
+  .tab { padding: 7px 14px; border-radius: 8px; cursor: pointer; color: var(--muted);
+    border: 1px solid transparent; user-select: none; }
+  .tab.active { background: var(--chip); color: var(--ink); border-color: var(--border); }
+  .count { display: inline-block; min-width: 20px; padding: 1px 7px; margin-left: 6px;
+    border-radius: 20px; background: var(--accent); color: #fff; font-size: 12px; }
+  main { max-width: 1000px; margin: 0 auto; padding: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+    padding: 16px; margin-bottom: 16px; }
+  .row { display: flex; gap: 14px; }
+  .cover { width: 74px; height: 111px; object-fit: cover; border-radius: 6px;
+    background: var(--chip); flex: none; border: 1px solid var(--border); }
+  .cover.sm { width: 52px; height: 78px; }
+  .title { font-weight: 640; }
+  .muted { color: var(--muted); font-size: 13px; }
+  .reason { display: inline-block; margin-top: 6px; padding: 2px 9px; border-radius: 20px;
+    background: var(--chip); font-size: 12px; color: var(--muted); }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .cands { margin-top: 14px; display: grid; gap: 10px; }
+  .cand { display: flex; gap: 12px; align-items: center; padding: 10px;
+    border: 1px solid var(--border); border-radius: 10px; }
+  .cand .grow { flex: 1; min-width: 0; }
+  button { font: inherit; cursor: pointer; border-radius: 8px; padding: 7px 13px;
+    border: 1px solid var(--border); background: var(--panel); color: var(--ink); }
+  button:hover { border-color: var(--accent); }
+  button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  button.good { background: var(--good); color: #fff; border-color: var(--good); }
+  button.ghost { color: var(--muted); }
+  button:disabled { opacity: .5; cursor: default; }
+  .actions { margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-size: 12px; color: var(--muted); background: var(--chip);
+    padding: 2px 8px; border-radius: 6px; }
+  .empty { text-align: center; color: var(--muted); padding: 60px 0; }
+  .qtools { display: flex; justify-content: flex-end; margin-bottom: 12px; }
+  /* audit */
+  .agroup { }
+  .arow { display: grid; grid-template-columns: 26px 120px 1fr; gap: 10px;
+    align-items: start; padding: 9px 0; border-top: 1px solid var(--border); }
+  .arow:first-child { border-top: 0; }
+  .field { font-weight: 600; font-size: 13px; }
+  .cur { color: var(--bad); } .prop { color: var(--good); }
+  .arow.manual .field::after { content: " ⚑"; }
+  .cmpcovers { display: flex; gap: 10px; margin-top: 6px; align-items: flex-end; }
+  .cmpcovers figure { margin: 0; text-align: center; }
+  .cmpcovers figcaption { font-size: 11px; color: var(--muted); }
+  .bar { position: sticky; bottom: 0; background: var(--panel); border-top: 1px solid var(--border);
+    padding: 12px 20px; display: flex; gap: 10px; align-items: center; }
+  /* The `hidden` attribute must win over `display: flex` so the audit bar only
+     shows on the Audit tab. */
+  .bar[hidden] { display: none; }
+  .toast { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+    background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 8px;
+    opacity: 0; transition: opacity .2s; pointer-events: none; z-index: 20; }
+  .toast.show { opacity: .95; }
+  .spin { padding: 40px; text-align: center; color: var(--muted); }
+</style>
+</head>
+<body>
+<header>
+  <h1>📚 se-hardcover review</h1>
+  <div class="tabs">
+    <div class="tab active" data-tab="queue">Review queue <span class="count" id="qcount">–</span></div>
+    <div class="tab" data-tab="audit">Audit <span class="count" id="acount">–</span></div>
+  </div>
+</header>
+<main>
+  <section id="queue">
+    <div class="qtools"><button id="refreshbtn" class="ghost">↻ Re-score queue with current matcher</button></div>
+    <div id="qlist"><div class="spin">Loading review queue…</div></div>
+  </section>
+  <section id="audit" hidden><div class="spin">Loading audit…</div></section>
+</main>
+<div class="bar" id="auditbar" hidden>
+  <span class="pill" id="auditstat"></span>
+  <span style="flex:1"></span>
+  <button id="savebtn">Save approvals</button>
+  <button id="applybtn" class="good">Apply approved fixes</button>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = (s, r=document) => r.querySelector(s);
+const el = (t, cls, txt) => { const e = document.createElement(t); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+const esc = s => (s ?? "").toString();
+let toastT;
+function toast(msg, bad=false) {
+  const t = $("#toast"); t.textContent = msg; t.style.background = bad ? "var(--bad)" : "";
+  t.classList.add("show"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("show"), 2600);
+}
+async function api(url, opts) {
+  const r = await fetch(url, opts);
+  if (!r.ok) { const e = await r.json().catch(() => ({detail: r.statusText})); throw new Error(e.detail || r.statusText); }
+  return r.json();
+}
+
+// ---- tabs ----
+document.querySelectorAll(".tab").forEach(t => t.onclick = () => {
+  document.querySelectorAll(".tab").forEach(x => x.classList.toggle("active", x === t));
+  const tab = t.dataset.tab;
+  $("#queue").hidden = tab !== "queue";
+  $("#audit").hidden = tab !== "audit";
+  $("#auditbar").hidden = tab !== "audit";
+});
+
+// ---- review queue ----
+async function loadQueue() {
+  try {
+    const data = await api("/api/queue");
+    $("#qcount").textContent = data.count;
+    const root = $("#qlist"); root.innerHTML = "";
+    if (!data.count) { root.appendChild(el("div", "empty", "🎉 Review queue is empty.")); return; }
+    data.items.forEach(item => root.appendChild(queueCard(item)));
+  } catch (e) { $("#qlist").innerHTML = ""; $("#qlist").appendChild(el("div", "empty", "Error: " + e.message)); }
+}
+$("#refreshbtn").onclick = async (ev) => {
+  const b = ev.target; b.disabled = true; const orig = b.textContent; b.textContent = "Re-scoring…";
+  try {
+    const r = await api("/api/queue/refresh", { method: "POST" });
+    toast(`Re-scored ${r.updated} items — ${r.now_confident} now match confidently`);
+    await loadQueue();
+  } catch (e) { toast("Refresh failed: " + e.message, true); }
+  finally { b.disabled = false; b.textContent = orig; }
+};
+function queueCard(item) {
+  const card = el("div", "card"); card.dataset.se = item.se_url;
+  const row = el("div", "row");
+  const cov = el("img", "cover"); cov.src = item.se.cover_url || ""; cov.alt = "";
+  row.appendChild(cov);
+  const info = el("div", "grow");
+  info.appendChild(el("div", "title", item.title + (item.se.subtitle ? ": " + item.se.subtitle : "")));
+  info.appendChild(el("div", "muted", [item.se.author, item.se.release_date].filter(Boolean).join(" · ")));
+  const link = el("a", null, "Standard Ebooks ↗"); link.href = item.se_url; link.target = "_blank";
+  info.appendChild(link);
+  info.appendChild(document.createElement("br"));
+  info.appendChild(el("span", "reason", item.reason));
+  row.appendChild(info);
+  card.appendChild(row);
+
+  const cands = el("div", "cands");
+  item.candidates.forEach(c => {
+    const cc = el("div", "cand");
+    const ci = el("img", "cover sm"); ci.src = c.image_url || ""; ci.alt = "";
+    cc.appendChild(ci);
+    const g = el("div", "grow");
+    g.appendChild(el("div", "title", esc(c.title)));
+    g.appendChild(el("div", "muted", (c.authors || []).join(", ")));
+    const meta = el("div", "muted", `book ${c.id} · score ${c.score ?? "?"}`);
+    const hl = el("a", null, " · view ↗"); hl.href = c.hardcover_url; hl.target = "_blank"; meta.appendChild(hl);
+    g.appendChild(meta);
+    cc.appendChild(g);
+    const b = el("button", "primary", "Attach here");
+    b.onclick = () => resolve(card, item.se_url, "attach", c.id, b);
+    cc.appendChild(b);
+    cands.appendChild(cc);
+  });
+  card.appendChild(cands);
+
+  const act = el("div", "actions");
+  const create = el("button", "good", "＋ Create new Hardcover book");
+  create.onclick = () => { if (confirm(`Create a NEW Hardcover book for "${item.title}"?`)) resolve(card, item.se_url, "create", null, create); };
+  const skip = el("button", "ghost", "Skip");
+  skip.onclick = () => resolve(card, item.se_url, "skip", null, skip);
+  act.appendChild(create); act.appendChild(skip);
+  card.appendChild(act);
+  return card;
+}
+async function resolve(card, se_url, action, book_id, btn) {
+  card.querySelectorAll("button").forEach(b => b.disabled = true);
+  btn.textContent = "Working…";
+  try {
+    const res = await api("/api/queue/resolve", {
+      method: "POST", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({se_url, action, book_id}),
+    });
+    toast(action === "skip" ? "Skipped" : `${action}: edition ${res.edition_id} (${res.detail})`);
+    card.style.transition = "opacity .25s"; card.style.opacity = "0";
+    setTimeout(() => { card.remove(); const n = +$("#qcount").textContent - 1; $("#qcount").textContent = n;
+      if (n === 0) loadQueue(); }, 260);
+  } catch (e) {
+    toast("Failed: " + e.message, true);
+    card.querySelectorAll("button").forEach(b => b.disabled = false);
+    btn.textContent = action === "attach" ? "Attach here" : action === "create" ? "＋ Create new Hardcover book" : "Skip";
+  }
+}
+
+// ---- audit ----
+let auditRows = [];
+async function loadAudit() {
+  try {
+    const data = await api("/api/audit");
+    auditRows = data.rows;
+    $("#acount").textContent = data.count;
+    const root = $("#audit"); root.innerHTML = "";
+    $("#auditbar").hidden = $("#audit").hidden;
+    if (!data.exists) { root.appendChild(el("div", "empty", "No audit-report.csv found. Run `se-hardcover audit` first.")); return; }
+    if (!data.count) { root.appendChild(el("div", "empty", "Audit report is empty.")); return; }
+    const groups = {};
+    data.rows.forEach(r => (groups[r.edition_id] = groups[r.edition_id] || []).push(r));
+    Object.entries(groups).forEach(([eid, rows]) => root.appendChild(auditCard(eid, rows)));
+    updateAuditStat();
+  } catch (e) { $("#audit").innerHTML = ""; $("#audit").appendChild(el("div", "empty", "Error: " + e.message)); }
+}
+function auditCard(eid, rows) {
+  const card = el("div", "card agroup");
+  const head = el("div", "row");
+  const info = el("div", "grow");
+  const first = rows[0];
+  const hcTitle = first.hardcover_url ? first.hardcover_url.split("/").pop() : ("edition " + eid);
+  info.appendChild(el("div", "title", "Edition " + eid));
+  const hl = el("a", null, "open on Hardcover ↗"); hl.href = first.hardcover_url; hl.target = "_blank";
+  info.appendChild(hl);
+  if (first.se_url) { const sl = el("a", null, "  ·  SE ↗"); sl.href = first.se_url; sl.target = "_blank"; info.appendChild(sl); }
+  head.appendChild(info);
+  card.appendChild(head);
+
+  rows.forEach(r => {
+    const manual = r.fix_kind === "manual";
+    const ar = el("div", "arow" + (manual ? " manual" : ""));
+    const cb = el("input"); cb.type = "checkbox"; cb.checked = r.approve === "yes";
+    cb.dataset.eid = r.edition_id; cb.dataset.field = r.field;
+    cb.onchange = () => { r.approve = cb.checked ? "yes" : ""; updateAuditStat(); };
+    if (manual) { cb.title = "Judgment call — approve manually"; }
+    ar.appendChild(cb);
+    ar.appendChild(el("div", "field", r.field));
+    const detail = el("div");
+    detail.appendChild(el("div", "muted", r.problem));
+    if (r.field === "cover") {
+      const cmp = el("div", "cmpcovers");
+      [["current", r.current, "cur"], ["proposed (SE)", r.proposed, "prop"]].forEach(([cap, url, cls]) => {
+        const fig = el("figure"); const im = el("img", "cover sm"); im.src = url || ""; fig.appendChild(im);
+        fig.appendChild(el("figcaption", cls, cap)); cmp.appendChild(fig);
+      });
+      detail.appendChild(cmp);
+    } else {
+      const line = el("div");
+      const c = el("span", "cur", esc(r.current)); const arrow = el("span", "muted", "  →  ");
+      const p = el("span", "prop", esc(r.proposed));
+      line.appendChild(c); line.appendChild(arrow); line.appendChild(p);
+      detail.appendChild(line);
+    }
+    ar.appendChild(detail);
+    card.appendChild(ar);
+  });
+  return card;
+}
+function collectApprovals() {
+  const out = {};
+  auditRows.forEach(r => { (out[r.edition_id] = out[r.edition_id] || {})[r.field] = r.approve === "yes"; });
+  return out;
+}
+function updateAuditStat() {
+  const n = auditRows.filter(r => r.approve === "yes").length;
+  $("#auditstat").textContent = `${n} of ${auditRows.length} approved`;
+}
+$("#savebtn").onclick = async () => {
+  try { const r = await api("/api/audit/save", { method: "POST", headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({approvals: collectApprovals()}) });
+    toast(`Saved — ${r.approved} approved`); } catch (e) { toast("Save failed: " + e.message, true); }
+};
+$("#applybtn").onclick = async () => {
+  const n = auditRows.filter(r => r.approve === "yes").length;
+  if (!n) return toast("Nothing approved to apply.", true);
+  if (!confirm(`Apply ${n} approved fix(es) to Hardcover now? This saves first, then writes.`)) return;
+  try {
+    await api("/api/audit/save", { method: "POST", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({approvals: collectApprovals()}) });
+    const s = await api("/api/audit/apply", { method: "POST" });
+    toast(`Applied: ${s.updated} updated, ${s.covers} covers, ${s.errors} errors`);
+    loadAudit();
+  } catch (e) { toast("Apply failed: " + e.message, true); }
+};
+
+loadQueue();
+loadAudit();
+</script>
+</body>
+</html>

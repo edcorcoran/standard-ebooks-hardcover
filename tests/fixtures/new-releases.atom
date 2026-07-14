@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet href="https://standardebooks.org/feeds/atom/style" type="text/xsl"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
+	<script xmlns="http://www.w3.org/1999/xhtml" src="https://standardebooks.org/scripts/xslt-polyfill.min.js"/>
+	<id>https://standardebooks.org/feeds/atom/new-releases</id>
+	<link href="https://standardebooks.org/feeds/atom/new-releases" rel="self" type="application/atom+xml"/>
+	<title>Standard Ebooks - Newest Ebooks</title>
+	<subtitle>The 15 latest Standard Ebooks, most-recently-released first.</subtitle>
+	<icon>https://standardebooks.org/images/logo.png</icon>
+	<updated>2026-07-09T22:03:25Z</updated>
+	<author>
+		<name>Standard Ebooks</name>
+		<uri>https://standardebooks.org</uri>
+	</author>
+	<link href="https://standardebooks.org/opensearch" rel="search" title="Standard Ebooks" type="application/opensearchdescription+xml"/>
+	<entry>
+		<id>https://standardebooks.org/ebooks/siegfried-sassoon/memoirs-of-an-infantry-officer</id>
+		<title>Memoirs of an Infantry Officer</title>
+		<author>
+			<name>Siegfried Sassoon</name>
+			<uri>https://standardebooks.org/ebooks/siegfried-sassoon</uri>
+		</author>
+		<published>2026-07-09T21:59:52Z</published>
+		<updated>2026-07-09T21:59:54Z</updated>
+		<rights>Public domain in the United States. Users located outside of the United States must check their local laws before using this ebook. Original content released to the public domain via the Creative Commons CC0 1.0 Universal Public Domain Dedication.</rights>
+		<summary type="text">An Englishman recounts his service, and his turn to pacifism, during World War I.</summary>
+		<content type="html">&lt;p&gt;In &lt;a href="https://standardebooks.org/ebooks/siegfried-sassoon/memoirs-of-a-foxhunting-man"&gt;&lt;i&gt;Memoirs of a Foxhunting Man&lt;/i&gt;&lt;/a&gt; we meet &lt;a href="https://standardebooks.org/collections/memoirs-of-george-sherston"&gt;George Sherston&lt;/a&gt;, a young man coming of age in the idyllic English countryside just before the Great War tears through Europe. The book ends with his enlistment in the Yeomanry, and &lt;i&gt;Memoirs of an Infantry Officer&lt;/i&gt; begins with him deployed deep in the trenches of France.&lt;/p&gt; &lt;p&gt;We follow Sherston as he’s transferred to Army School, then back to the trenches, then to the Battle of the Somme. At the Somme he’s wounded, and as he convalesces the psychological weight of the war that has been piling up on him finally causes a break and makes him turn to pacifism.&lt;/p&gt; &lt;p&gt;George Sherston is &lt;a href="https://standardebooks.org/ebooks/siegfried-sassoon"&gt;Siegfried Sassoon’s&lt;/a&gt; literary alter-ego. This roman-a-clef, and the George Sherston series as a whole, is a fictionalized account of Sassoon’s real life and experiences during the Great War. Several real-life people are portrayed under pseudonyms, like the soldier David Cromlech for &lt;a href="https://standardebooks.org/ebooks/robert-graves"&gt;Robert Graves&lt;/a&gt; and Dick Tiltwood for David Cuthbert Thomas, a man who would go on to be the subject of some of both Sassoon’s and Graves’ war poetry.&lt;/p&gt; &lt;p&gt;The memoir was a huge success, moving more copies than even the previous entry in the series, and earning Sassoon his place as one of the leading literary voices of the First World War.&lt;/p&gt;</content>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="World War, 1914-1918--Personal narratives, English."/>
+		<category scheme="https://standardebooks.org/vocab/subjects" term="Autobiography"/>
+		<category scheme="https://standardebooks.org/vocab/subjects" term="Fiction"/>
+		<media:thumbnail height="525" url="https://standardebooks.org/ebooks/siegfried-sassoon/memoirs-of-an-infantry-officer/downloads/cover-thumbnail.jpg" width="350"/>
+		<link href="https://standardebooks.org/ebooks/siegfried-sassoon/memoirs-of-an-infantry-officer" rel="alternate" title="This ebook’s page at Standard Ebooks" type="application/xhtml+xml"/>
+		<link href="https://standardebooks.org/ebooks/siegfried-sassoon/memoirs-of-an-infantry-officer/downloads/siegfried-sassoon_memoirs-of-an-infantry-officer.epub?source=feed" length="533064" rel="enclosure" title="Recommended compatible epub" type="application/epub+zip"/>
+		<link href="https://standardebooks.org/ebooks/siegfried-sassoon/memoirs-of-an-infantry-officer/downloads/siegfried-sassoon_memoirs-of-an-infantry-officer_advanced.epub?source=feed" length="528702" rel="enclosure" title="Advanced epub" type="application/epub+zip"/>
+		<link href="https://standardebooks.org/ebooks/siegfried-sassoon/memoirs-of-an-infantry-officer/downloads/siegfried-sassoon_memoirs-of-an-infantry-officer.kepub.epub?source=feed" length="524076" rel="enclosure" title="Kobo Kepub epub" type="application/kepub+zip"/>
+		<link href="https://standardebooks.org/ebooks/siegfried-sassoon/memoirs-of-an-infantry-officer/downloads/siegfried-sassoon_memoirs-of-an-infantry-officer.azw3?source=feed" length="687290" rel="enclosure" title="Amazon Kindle azw3" type="application/x-mobipocket-ebook"/>
+		<link href="https://standardebooks.org/ebooks/siegfried-sassoon/memoirs-of-an-infantry-officer/text/single-page" length="589166" rel="enclosure" title="XHTML" type="application/xhtml+xml"/>
+	</entry>
+	<entry>
+		<id>https://standardebooks.org/ebooks/edgar-saltus/the-perfume-of-eros</id>
+		<title>The Perfume of Eros</title>
+		<author>
+			<name>Edgar Saltus</name>
+			<uri>https://standardebooks.org/ebooks/edgar-saltus</uri>
+		</author>
+		<published>2026-07-09T19:34:45Z</published>
+		<updated>2026-07-09T19:39:25Z</updated>
+		<rights>Public domain in the United States. Users located outside of the United States must check their local laws before using this ebook. Original content released to the public domain via the Creative Commons CC0 1.0 Universal Public Domain Dedication.</rights>
+		<summary type="text">Two intertwined love triangles are thrown into turmoil when a body is found on a bench in Gramercy Park, New York.</summary>
+		<content type="html">&lt;p&gt;Fanny Price has long hoped that Royal Loftus, the heir to the wealthy Loftus family, would court her, but he refuses to commit himself. Fanny is ideal, he thinks, but too ambitious, “with a perfect mania for matrimony.” Instead, he turns his attention to the far less affluent Marie Durand, sweeping her off her feet and proposing to her without ever making good on his promise.&lt;/p&gt; &lt;p&gt;Fanny, rather disappointed by this turn of events, marries Arthur Annandale on a whim; his engagement to her friend Sylvia Waldron has just been broken off, and the events that led to it are hazy in his mind. These two intertwined love triangles are thrown into turmoil when, one morning, a body is found on a bench in Gramercy Park.&lt;/p&gt; &lt;p&gt;&lt;i&gt;The Perfume of Eros&lt;/i&gt; caused a stir following the high-profile murder of famed architect Stanford White in 1906; according to the &lt;i&gt;San Francisco News Letter&lt;/i&gt;, there were remarkable similarities between the book and actual events. &lt;a href="https://standardebooks.org/ebooks/edgar-saltus"&gt;Saltus&lt;/a&gt; hastened to point out in a letter to the editor that the publication of &lt;i&gt;The Perfume of Eros&lt;/i&gt; preceded White’s murder by a year.&lt;/p&gt; &lt;p&gt;Saltus would later take the central plot of &lt;i&gt;The Perfume of Eros&lt;/i&gt;, along with some of his short stories, and rework them into a novel titled &lt;i&gt;The Paliser Case&lt;/i&gt;. Standard Ebooks hosts this book instead of its very similar reworking.&lt;/p&gt;</content>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="New York (N.Y.) -- Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Man-woman relationships -- Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Trials (Murder) -- Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Murder -- Fiction"/>
+		<category scheme="https://standardebooks.org/vocab/subjects" term="Fiction"/>
+		<media:thumbnail height="525" url="https://standardebooks.org/ebooks/edgar-saltus/the-perfume-of-eros/downloads/cover-thumbnail.jpg" width="350"/>
+		<link href="https://standardebooks.org/ebooks/edgar-saltus/the-perfume-of-eros" rel="alternate" title="This ebook’s page at Standard Ebooks" type="application/xhtml+xml"/>
+		<link href="https://standardebooks.org/ebooks/edgar-saltus/the-perfume-of-eros/downloads/edgar-saltus_the-perfume-of-eros.epub?source=feed" length="782941" rel="enclosure" title="Recommended compatible epub" type="application/epub+zip"/>
+		<link href="https://standardebooks.org/ebooks/edgar-saltus/the-perfume-of-eros/downloads/edgar-saltus_the-perfume-of-eros_advanced.epub?source=feed" length="1181321" rel="enclosure" title="Advanced epub" type="application/epub+zip"/>
+		<link href="https://standardebooks.org/ebooks/edgar-saltus/the-perfume-of-eros/downloads/edgar-saltus_the-perfume-of-eros.kepub.epub?source=feed" length="782679" rel="enclosure" title="Kobo Kepub epub" type="application/kepub+zip"/>
+		<link href="https://standardebooks.org/ebooks/edgar-saltus/the-perfume-of-eros/downloads/edgar-saltus_the-perfume-of-eros.azw3?source=feed" length="867072" rel="enclosure" title="Amazon Kindle azw3" type="application/x-mobipocket-ebook"/>
+		<link href="https://standardebooks.org/ebooks/edgar-saltus/the-perfume-of-eros/text/single-page" length="337286" rel="enclosure" title="XHTML" type="application/xhtml+xml"/>
+	</entry>
+	<entry>
+		<id>https://standardebooks.org/ebooks/walter-white/flight</id>
+		<title>Flight</title>
+		<author>
+			<name>Walter White</name>
+			<uri>https://standardebooks.org/ebooks/walter-white</uri>
+		</author>
+		<published>2026-07-09T19:21:11Z</published>
+		<updated>2026-07-09T19:21:12Z</updated>
+		<rights>Public domain in the United States. Users located outside of the United States must check their local laws before using this ebook. Original content released to the public domain via the Creative Commons CC0 1.0 Universal Public Domain Dedication.</rights>
+		<summary type="text">A young Louisiana Creole woman struggles for racial and gender equality as she asserts her independence.</summary>
+		<content type="html">&lt;p&gt;After the death of his wife Margot, Jean Daquin, the patriarch of a proud Louisiana Creole family, finds himself crushed by despair. As a widower, Jean is barely able to take care of his daughter Mimi, but he marries Mary Robertson, the industrious daughter of a Chicago businessman. Mary takes charge of the family’s affairs and convinces Jean to move the family to Atlanta in order to pursue more lucrative business opportunities. As Mimi comes of age in Atlanta, she becomes increasingly conscious of her racial identity as a woman of color, and of the stifling cultural conformity that is demanded of Atlanta’s African-American bourgeoisie. &lt;i&gt;Flight&lt;/i&gt; follows Mimi’s struggle to assert her independence and live according to her principles in the face of racial and gender inequality, which takes her from Atlanta to Philadelphia and ultimately New York City.&lt;/p&gt;</content>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="African Americans--Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Passing (Identity)--Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Single mothers--Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="New York (N.Y.)--Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Atlanta (Ga.)--Fiction"/>
+		<category scheme="https://standardebooks.org/vocab/subjects" term="Fiction"/>
+		<media:thumbnail height="525" url="https://standardebooks.org/ebooks/walter-white/flight/downloads/cover-thumbnail.jpg" width="350"/>
+		<link href="https://standardebooks.org/ebooks/walter-white/flight" rel="alternate" title="This ebook’s page at Standard Ebooks" type="application/xhtml+xml"/>
+		<link href="https://standardebooks.org/ebooks/walter-white/flight/downloads/walter-white_flight.epub?source=feed" length="876968" rel="enclosure" title="Recommended compatible epub" type="application/epub+zip"/>
+		<link href="https://standardebooks.org/ebooks/walter-white/flight/downloads/walter-white_flight_advanced.epub?source=feed" length="1631591" rel="enclosure" title="Advanced epub" type="application/epub+zip"/>
+		<link href="https://standardebooks.org/ebooks/walter-white/flight/downloads/walter-white_flight.kepub.epub?source=feed" length="900913" rel="enclosure" title="Kobo Kepub epub" type="application/kepub+zip"/>
+		<link href="https://standardebooks.org/ebooks/walter-white/flight/downloads/walter-white_flight.azw3?source=feed" length="1027251" rel="enclosure" title="Amazon Kindle azw3" type="application/x-mobipocket-ebook"/>
+		<link href="https://standardebooks.org/ebooks/walter-white/flight/text/single-page" length="647535" rel="enclosure" title="XHTML" type="application/xhtml+xml"/>
+	</entry>
+	<entry>
+		<id>https://standardebooks.org/ebooks/dorothy-m-richardson/deadlock</id>
+		<title>Deadlock</title>
+		<author>
+			<name>Dorothy M. Richardson</name>
+			<uri>https://standardebooks.org/ebooks/dorothy-m-richardson</uri>
+		</author>
+		<published>2026-07-07T21:04:18Z</published>
+		<updated>2026-07-08T13:03:24Z</updated>
+		<rights>Public domain in the United States. Users located outside of the United States must check their local laws before using this ebook. Original content released to the public domain via the Creative Commons CC0 1.0 Universal Public Domain Dedication.</rights>
+		<summary type="text">An independent woman living in a London boarding house at the dawn of the twentieth century becomes involved with a fellow lodger from Russia.</summary>
+		<content type="html">&lt;p&gt;&lt;i&gt;Deadlock&lt;/i&gt; is the sixth “chapter volume” of &lt;a href="https://standardebooks.org/ebooks/dorothy-m-richardson"&gt;Dorothy M. Richardson’s&lt;/a&gt; pioneering semi-autobiographical series, &lt;a href="https://standardebooks.org/collections/pilgrimage"&gt;Pilgrimage&lt;/a&gt;.&lt;/p&gt; &lt;p&gt;Michael Shatov, a young Russian intellectual exploring England, arrives at the boarding house that has long hosted series protagonist Miriam Henderson. He engages Miriam as a tutor of English, and the two quickly recognize each other as kindred spirits, talking late into the night about philosophy and literature. Michael pushes Miriam to translate French works, a major step on her journey to becoming a writer.&lt;/p&gt;</content>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Autobiographical fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Women -- England -- Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="England -- Social life and customs -- 20th century -- Fiction"/>
+		<category scheme="https://standardebooks.org/vocab/subjects" term="Fiction"/>
+		<media:thumbnail height="525" url="https://standardebooks.org/ebooks/dorothy-m-richardson/deadlock/downloads/cover-thumbnail.jpg" width="350"/>
+		<link href="https://standardebooks.org/ebooks/dorothy-m-richardson/deadlock" rel="alternate" title="This ebook’s page at Standard Ebooks" type="application/xhtml+xml"/>
+		<link href="https://standardebooks.org/ebooks/dorothy-m-richardson/deadlock/downloads/dorothy-m-richardson_deadlock.epub?source=feed" length="587662" rel="enclosure" title="Recommended compatible epub" type="application/epub+zip"/>
+		<link href="https://standardebooks.org/ebooks/dorothy-m-richardson/deadlock/downloads/dorothy-m-richardson_deadlock_advanced.epub?source=feed" length="602541" rel="enclosure" title="Advanced epub" type="application/epub+zip"/>
+		<link href="https://standardebooks.org/ebooks/dorothy-m-richardson/deadlock/downloads/dorothy-m-richardson_deadlock.kepub.epub?source=feed" length="600322" rel="enclosure" title="Kobo Kepub epub" type="application/kepub+zip"/>
+		<link href="https://standardebooks.org/ebooks/dorothy-m-richardson/deadlock/downloads/dorothy-m-richardson_deadlock.azw3?source=feed" length="740621" rel="enclosure" title="Amazon Kindle azw3" type="application/x-mobipocket-ebook"/>
+		<link href="https://standardebooks.org/ebooks/dorothy-m-richardson/deadlock/text/single-page" length="572641" rel="enclosure" title="XHTML" type="application/xhtml+xml"/>
+	</entry>
+	<entry>
+		<id>https://standardebooks.org/ebooks/wilkie-collins/basil</id>
+		<title>Basil</title>
+		<author>
+			<name>Wilkie Collins</name>
+			<uri>https://standardebooks.org/ebooks/wilkie-collins</uri>
+		</author>
+		<published>2026-07-06T21:42:02Z</published>
+		<updated>2026-07-06T21:47:47Z</updated>
+		<rights>Public domain in the United States. Users located outside of the United States must check their local laws before using this ebook. Original content released to the public domain via the Creative Commons CC0 1.0 Universal Public Domain Dedication.</rights>
+		<summary type="text">An aristocratic young man falls in love at first sight with a lower-class girl on an omnibus, with disastrous consequences.</summary>
+		<content type="html">&lt;p&gt;&lt;i&gt;Basil&lt;/i&gt;, published in 1852, is &lt;a href="https://standardebooks.org/ebooks/wilkie-collins"&gt;Wilkie Collins’&lt;/a&gt; second novel. In writing it, Collins took a very different approach from his first novel, a historical romance: &lt;i&gt;Basil&lt;/i&gt; is his first venture into “sensation fiction.” It features themes of adultery, fraud, betrayal, and vengeance; themes certainly sensational by the standards of the early Victorian era in which it was written.&lt;/p&gt; &lt;p&gt;The novel begins with Basil, an aristocratic young man who sees a beautiful young woman on an omnibus, and instantly falls in love with her. Unfortunately for Basil, she’s the daughter of a mere linen-draper, and thus far beneath him in class. Nevertheless Basil pursues her and enters into an unwise arrangement with her father, ultimately leading to disastrous consequences.&lt;/p&gt; &lt;p&gt;On its publication the novel attracted condemnation from some readers, and Collins defends himself in the revised introduction of the book against “the prurient misinterpretation of certain perfectly innocent passages.” It steadily grew in popularity despite (or perhaps because of) such condemnation.&lt;/p&gt;</content>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Inheritance and succession -- Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Young men -- Psychology -- Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Fathers and sons -- Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="England -- Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Revenge -- Fiction"/>
+		<category scheme="https://standardebooks.org/vocab/subjects" term="Fiction"/>
+		<media:thumbnail height="525" url="https://standardebooks.org/ebooks/wilkie-collins/basil/downloads/cover-thumbnail.jpg" width="350"/>
+		<link href="https://standardebooks.org/ebooks/wilkie-collins/basil" rel="alternate" title="This ebook’s page at Standard Ebooks" type="application/xhtml+xml"/>
+		<link href="https://standardebooks.org/ebooks/wilkie-collins/basil/downloads/wilkie-collins_basil.epub?source=feed" length="605681" rel="enclosure" title="Recommended compatible epub" type="application/epub+zip"/>
+		<link href="https://standardebooks.org/ebooks/wilkie-collins/basil/downloads/wilkie-collins_basil_advanced.epub?source=feed" length="983989" rel="enclosure" title="Advanced epub" type="application/epub+zip"/>
+		<link href="https://standardebooks.org/ebooks/wilkie-collins/basil/downloads/wilkie-collins_basil.kepub.epub?source=feed" length="631647" rel="enclosure" title="Kobo Kepub epub" type="application/kepub+zip"/>
+		<link href="https://standardebooks.org/ebooks/wilkie-collins/basil/downloads/wilkie-collins_basil.azw3?source=feed" length="790991" rel="enclosure" title="Amazon Kindle azw3" type="application/x-mobipocket-ebook"/>
+		<link href="https://standardebooks.org/ebooks/wilkie-collins/basil/text/single-page" length="770392" rel="enclosure" title="XHTML" type="application/xhtml+xml"/>
+	</entry>
+	<entry>
+		<id>https://standardebooks.org/ebooks/noel-loomis/short-science-fiction</id>
+		<title>Short Science Fiction</title>
+		<author>
+			<name>Noel Loomis</name>
+			<uri>https://standardebooks.org/ebooks/noel-loomis</uri>
+		</author>
+		<published>2026-07-06T21:06:57Z</published>
+		<updated>2026-07-06T21:07:44Z</updated>
+		<rights>Public domain in the United States. Users located outside of the United States must check their local laws before using this ebook. Original content released to the public domain via the Creative Commons CC0 1.0 Universal Public Domain Dedication.</rights>
+		<summary type="text">A collection of short science fiction stories by Noel Loomis.</summary>
+		<content type="html">&lt;p&gt;&lt;a href="https://standardebooks.org/ebooks/noel-loomis"&gt;Noel Loomis&lt;/a&gt; was a prolific writer of short fiction for popular pulp magazines from the 1930s into the 1970s. While he wrote many western novels and some western short fiction, the majority of his short-form work was science fiction.&lt;/p&gt; &lt;p&gt;Loomis’s science fiction is distinct from many of his contemporaries in that while he certainly wrote stories about space travel and futuristic military action, his stories more often imagined the future evolution of blue-collar professions, including (and especially) his own professional background in as a Linotype machine operator.&lt;/p&gt; &lt;p&gt;In Loomis’s science fiction readers will find the typical kinds of tales of futuristic war, time travel, and interplanetary exploration that one expects from pulp science fiction of the era; but just as often, they’ll encounter stories of futuristic parking garage logistics, personal injury litigation, and even bending the laws of time and space to meet publishing deadlines.&lt;/p&gt;</content>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="War stories"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Nuclear warfare -- Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Inventions"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Parking garages"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Science fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Short stories"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="People with disabilities--Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Man-woman relationships--Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Human-alien encounters--Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Space stations--Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Private investigators--Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Time travel--Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Gods--Fiction"/>
+		<category scheme="https://standardebooks.org/vocab/subjects" term="Science Fiction"/>
+		<category scheme="https://standardebooks.org/vocab/subjects" term="Shorts"/>
+		<media:thumbnail height="525" url="https://standardebooks.org/ebooks/noel-loomis/short-science-fiction/downloads/cover-thumbnail.jpg" width="350"/>
+		<link href="https://standardebooks.org/ebooks/noel-loomis/short-science-fiction" rel="alternate" title="This ebook’s page at Standard Ebooks" type="application/xhtml+xml"/>
+		<link href="https://standardebooks.org/ebooks/noel-loomis/short-science-fiction/downloads/noel-loomis_short-science-fiction.epub?source=feed" length="558999" rel="enclosure" title="Recommended compatible epub" type="application/epub+zip"/>
+		<link href="https://standardebooks.org/ebooks/noel-loomis/short-science-fiction/downloads/noel-loomis_short-science-fiction_advanced.epub?source=feed" length="929556" rel="enclosure" title="Advanced epub" type="application/epub+zip"/>
+		<link href="https://standardebooks.org/ebooks/noel-loomis/short-science-fiction/downloads/noel-loomis_short-science-fiction.kepub.epub?source=feed" length="555831" rel="enclosure" title="Kobo Kepub epub" type="application/kepub+zip"/>
+		<link href="https://standardebooks.org/ebooks/noel-loomis/short-science-fiction/downloads/noel-loomis_short-science-fiction.azw3?source=feed" length="655702" rel="enclosure" title="Amazon Kindle azw3" type="application/x-mobipocket-ebook"/>
+		<link href="https://standardebooks.org/ebooks/noel-loomis/short-science-fiction/text/single-page" length="361670" rel="enclosure" title="XHTML" type="application/xhtml+xml"/>
+	</entry>
+	<entry>
+		<id>https://standardebooks.org/ebooks/w-e-b-du-bois/the-quest-of-the-silver-fleece</id>
+		<title>The Quest of the Silver Fleece</title>
+		<author>
+			<name>W. E. B. Du Bois</name>
+			<uri>https://standardebooks.org/ebooks/w-e-b-du-bois</uri>
+		</author>
+		<published>2026-07-02T03:43:27Z</published>
+		<updated>2026-07-02T03:43:29Z</updated>
+		<rights>Public domain in the United States. Users located outside of the United States must check their local laws before using this ebook. Original content released to the public domain via the Creative Commons CC0 1.0 Universal Public Domain Dedication.</rights>
+		<summary type="text">In the post-Reconstruction era, a young Black man and woman from the deep South struggle to overcome the economic and political fleecing of their community.</summary>
+		<content type="html">&lt;p&gt;In post-Reconstruction Alabama, amidst the “silver fleece” of the cotton fields, a school for Black children attracts pupils eager to learn (but often unable to pay tuition)—and the hostility of plantation owners intent on maintaining their status and power. Among the pupils are Bles Alwyn, an ambitious and intelligent boy from Georgia, and Zora, an independent and mysterious Black girl from the nearby swamp. The story follows the efforts of Bless and Zora to help others in the working class by providing educational and economic opportunities that trap them in poverty: Bles by working within the political system, and Zora by building a collective that attempts to bypass the system.&lt;/p&gt; &lt;p&gt;&lt;i&gt;The Quest of the Silver Fleece&lt;/i&gt;, &lt;a href="https://standardebooks.org/ebooks/w-e-b-du-bois"&gt;W. E. B. Du Bois’s&lt;/a&gt; first novel, depicts in literary form many of the themes and insights from his earlier sociological masterpiece, &lt;a href="https://standardebooks.org/ebooks/w-e-b-du-bois/the-souls-of-black-folk"&gt;&lt;i&gt;The Souls of Black Folk&lt;/i&gt;&lt;/a&gt;. Strikingly, Du Bois there anticipates this book, saying, “certainly one might frame a pretty and not far-fetched analogy of witchery and dragons’ teeth, and blood and armed men, between the ancient and the modern quest of the Golden Fleece”—between the seemingly endless series of tests Jason overcomes, and the seemingly endless series of economic hurdles Black sharecroppers have to overcome in order to achieve economic security and social equality. &lt;i&gt;The Quest of the Silver Fleece&lt;/i&gt; thus vividly portrays the interlocking educational, socioeconomic, and political barriers in the deep South during the post-Reconstruction era, as well as the “Veil” that separates the races, ultimately offering a compelling vision of the importance of community and education to overcoming the “Negro Problem.”&lt;/p&gt;</content>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Psychological fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Rejection (Psychology) -- Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Love stories"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="African Americans -- Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Social classes -- Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="African American women -- Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Swamps -- Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Power (Social sciences) -- Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Cotton trade -- Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Race -- Fiction"/>
+		<category scheme="https://standardebooks.org/vocab/subjects" term="Fiction"/>
+		<media:thumbnail height="525" url="https://standardebooks.org/ebooks/w-e-b-du-bois/the-quest-of-the-silver-fleece/downloads/cover-thumbnail.jpg" width="350"/>
+		<link href="https://standardebooks.org/ebooks/w-e-b-du-bois/the-quest-of-the-silver-fleece" rel="alternate" title="This ebook’s page at Standard Ebooks" type="application/xhtml+xml"/>
+		<link href="https://standardebooks.org/ebooks/w-e-b-du-bois/the-quest-of-the-silver-fleece/downloads/w-e-b-du-bois_the-quest-of-the-silver-fleece.epub?source=feed" length="915245" rel="enclosure" title="Recommended compatible epub" type="application/epub+zip"/>
+		<link href="https://standardebooks.org/ebooks/w-e-b-du-bois/the-quest-of-the-silver-fleece/downloads/w-e-b-du-bois_the-quest-of-the-silver-fleece_advanced.epub?source=feed" length="1740265" rel="enclosure" title="Advanced epub" type="application/epub+zip"/>
+		<link href="https://standardebooks.org/ebooks/w-e-b-du-bois/the-quest-of-the-silver-fleece/downloads/w-e-b-du-bois_the-quest-of-the-silver-fleece.kepub.epub?source=feed" length="943493" rel="enclosure" title="Kobo Kepub epub" type="application/kepub+zip"/>
+		<link href="https://standardebooks.org/ebooks/w-e-b-du-bois/the-quest-of-the-silver-fleece/downloads/w-e-b-du-bois_the-quest-of-the-silver-fleece.azw3?source=feed" length="1113657" rel="enclosure" title="Amazon Kindle azw3" type="application/x-mobipocket-ebook"/>
+		<link href="https://standardebooks.org/ebooks/w-e-b-du-bois/the-quest-of-the-silver-fleece/text/single-page" length="798336" rel="enclosure" title="XHTML" type="application/xhtml+xml"/>
+	</entry>
+	<entry>
+		<id>https://standardebooks.org/ebooks/kahlil-gibran/jesus-the-son-of-man</id>
+		<title>Jesus the Son of Man</title>
+		<author>
+			<name>Kahlil Gibran</name>
+			<uri>https://standardebooks.org/ebooks/kahlil-gibran</uri>
+		</author>
+		<published>2026-07-02T03:16:54Z</published>
+		<updated>2026-07-02T22:15:59Z</updated>
+		<rights>Public domain in the United States. Users located outside of the United States must check their local laws before using this ebook. Original content released to the public domain via the Creative Commons CC0 1.0 Universal Public Domain Dedication.</rights>
+		<summary type="text">The life of Jesus of Nazareth is examined through the lens of the people around him.</summary>
+		<content type="html">&lt;p&gt;Frustrated by depictions of Jesus in Western literature, &lt;a href="https://standardebooks.org/ebooks/kahlil-gibran"&gt;Kahlil Gibran&lt;/a&gt; wrote the short story collection &lt;i&gt;Jesus the Son of Man&lt;/i&gt; in order to “bring out the portrait of Jesus” as Gibran saw him. Each story is told from the perspective of one of Jesus’s contemporaries, including not only his followers but also his enemies and indifferent observers. By emphasizing Jesus’s humanity and vigor, Gibran challenges theological and devotional depictions of Jesus that center his divinity or portray him as lowly and meek.&lt;/p&gt;</content>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Jesus Christ--Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Bible. New Testament--History of Biblical events--Fiction"/>
+		<category scheme="https://standardebooks.org/vocab/subjects" term="Fiction"/>
+		<category scheme="https://standardebooks.org/vocab/subjects" term="Shorts"/>
+		<category scheme="https://standardebooks.org/vocab/subjects" term="Spirituality"/>
+		<media:thumbnail height="525" url="https://standardebooks.org/ebooks/kahlil-gibran/jesus-the-son-of-man/downloads/cover-thumbnail.jpg" width="350"/>
+		<link href="https://standardebooks.org/ebooks/kahlil-gibran/jesus-the-son-of-man" rel="alternate" title="This ebook’s page at Standard Ebooks" type="application/xhtml+xml"/>
+		<link href="https://standardebooks.org/ebooks/kahlil-gibran/jesus-the-son-of-man/downloads/kahlil-gibran_jesus-the-son-of-man.epub?source=feed" length="490116" rel="enclosure" title="Recommended compatible epub" type="application/epub+zip"/>
+		<link href="https://standardebooks.org/ebooks/kahlil-gibran/jesus-the-son-of-man/downloads/kahlil-gibran_jesus-the-son-of-man_advanced.epub?source=feed" length="900109" rel="enclosure" title="Advanced epub" type="application/epub+zip"/>
+		<link href="https://standardebooks.org/ebooks/kahlil-gibran/jesus-the-son-of-man/downloads/kahlil-gibran_jesus-the-son-of-man.kepub.epub?source=feed" length="480364" rel="enclosure" title="Kobo Kepub epub" type="application/kepub+zip"/>
+		<link href="https://standardebooks.org/ebooks/kahlil-gibran/jesus-the-son-of-man/downloads/kahlil-gibran_jesus-the-son-of-man.azw3?source=feed" length="551887" rel="enclosure" title="Amazon Kindle azw3" type="application/x-mobipocket-ebook"/>
+		<link href="https://standardebooks.org/ebooks/kahlil-gibran/jesus-the-son-of-man/text/single-page" length="326731" rel="enclosure" title="XHTML" type="application/xhtml+xml"/>
+	</entry>
+	<entry>
+		<id>https://standardebooks.org/ebooks/ameen-rihani/the-book-of-khalid</id>
+		<title>The Book of Khalid</title>
+		<author>
+			<name>Ameen Rihani</name>
+			<uri>https://standardebooks.org/ebooks/ameen-rihani</uri>
+		</author>
+		<published>2026-06-27T16:48:43Z</published>
+		<updated>2026-06-30T02:48:45Z</updated>
+		<rights>Public domain in the United States. Users located outside of the United States must check their local laws before using this ebook. Original content released to the public domain via the Creative Commons CC0 1.0 Universal Public Domain Dedication.</rights>
+		<summary type="text">A Lebanese iconoclast emigrates to America and embarks on a quixotic quest for the truth.</summary>
+		<content type="html">&lt;p&gt;After being turned out by his parents for his disobedience, a Maronite teenager named Khalid scrapes up the funds to emigrate to the United States of America by working as a muleteer. Crossing the Atlantic with his friend Shakib, Khalid sets himself up in New York city as a peddler of counterfeit trinkets “made in the Holy Land.” He quickly loses interest in peddling and develops eccentric philosophical views as he immerses himself in various turn-of-the-century subcultures, including the freethought movement, Bohemianism, and Tammany Hall. Spurred on by his love for his cousin Najma, Khalid returns to his Lebanese hometown, Baalbek, where his iconoclastic philosophy earns him the enmity of the religious and secular authorities. Becoming an exile in his own homeland, Khalid takes on the mantle of a prophet and develops an eclectic Arab nationalist philosophy that mixes Eastern and Western ideals.&lt;/p&gt; &lt;p&gt;Although it was composed in Lebanon, &lt;i&gt;The Book of Khalid&lt;/i&gt; is hailed as the first Arab-American novel. A reflection of &lt;a href="https://standardebooks.org/ebooks/ameen-rihani"&gt;Ameen Rihani’s&lt;/a&gt; own Arab nationalism, the novel has served as a literary touchpoint between the Arab and American worlds. The 100th anniversary of the novel’s publication coincided with the outbreak of the 2011 Arab Spring protests, which led some commentators to connect the anti-authoritarian Arab protests with Khalid’s revolutionary vision.&lt;/p&gt;</content>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Immigrants -- New York (State) -- New York -- Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Arab Americans -- Fiction"/>
+		<category scheme="https://standardebooks.org/vocab/subjects" term="Fiction"/>
+		<category scheme="https://standardebooks.org/vocab/subjects" term="Satire"/>
+		<media:thumbnail height="525" url="https://standardebooks.org/ebooks/ameen-rihani/the-book-of-khalid/downloads/cover-thumbnail.jpg" width="350"/>
+		<link href="https://standardebooks.org/ebooks/ameen-rihani/the-book-of-khalid" rel="alternate" title="This ebook’s page at Standard Ebooks" type="application/xhtml+xml"/>
+		<link href="https://standardebooks.org/ebooks/ameen-rihani/the-book-of-khalid/downloads/ameen-rihani_the-book-of-khalid.epub?source=feed" length="573860" rel="enclosure" title="Recommended compatible epub" type="application/epub+zip"/>
+		<link href="https://standardebooks.org/ebooks/ameen-rihani/the-book-of-khalid/downloads/ameen-rihani_the-book-of-khalid_advanced.epub?source=feed" length="1162439" rel="enclosure" title="Advanced epub" type="application/epub+zip"/>
+		<link href="https://standardebooks.org/ebooks/ameen-rihani/the-book-of-khalid/downloads/ameen-rihani_the-book-of-khalid.kepub.epub?source=feed" length="585445" rel="enclosure" title="Kobo Kepub epub" type="application/kepub+zip"/>
+		<link href="https://standardebooks.org/ebooks/ameen-rihani/the-book-of-khalid/downloads/ameen-rihani_the-book-of-khalid.azw3?source=feed" length="713382" rel="enclosure" title="Amazon Kindle azw3" type="application/x-mobipocket-ebook"/>
+		<link href="https://standardebooks.org/ebooks/ameen-rihani/the-book-of-khalid/text/single-page" length="624802" rel="enclosure" title="XHTML" type="application/xhtml+xml"/>
+	</entry>
+	<entry>
+		<id>https://standardebooks.org/ebooks/harry-harrison/short-fiction</id>
+		<title>Short Fiction</title>
+		<author>
+			<name>Harry Harrison</name>
+			<uri>https://standardebooks.org/ebooks/harry-harrison</uri>
+		</author>
+		<published>2026-06-25T19:02:26Z</published>
+		<updated>2026-06-30T02:48:50Z</updated>
+		<rights>Public domain in the United States. Users located outside of the United States must check their local laws before using this ebook. Original content released to the public domain via the Creative Commons CC0 1.0 Universal Public Domain Dedication.</rights>
+		<summary type="text">A collection of science fiction stories by Harry Harrison, ordered by date of publication.</summary>
+		<content type="html">&lt;p&gt;&lt;a href="https://standardebooks.org/ebooks/harry-harrison"&gt;Harry Harrison&lt;/a&gt; was a science fiction author with a long career from the 1950s through to the beginning of the twenty-first century. His novels and short stories blend science fiction and adventure, always with a focus on the characters over the technology. Harrison’s love for the genre led him to write more than a hundred short stories and fifty novels, with stints as an anthology editor and writer of sci-fi history.&lt;/p&gt; &lt;p&gt;Often, the themes Harrison explores are familiar ones: stories of robots bound by internal laws (“The Velvet Glove,” “Arm of the Law”), societal changes as a science (“The K-Factor”), and parallel universes (“Down to Earth”). But it’s his protagonists who, with their quick thinking and non-conformist moralities, take center stage.&lt;/p&gt; &lt;p&gt;Collected here are Harrison’s short stories that are currently known to have passed into the &lt;abbr&gt;U.S.&lt;/abbr&gt; public domain, arranged in order of publication, with the exception of “The Stainless Steel Rat” and “The Misplaced Battleship” which were later combined to form the basis of the novel &lt;a href="https://standardebooks.org/ebooks/harry-harrison/the-stainless-steel-rat"&gt;&lt;i&gt;The Stainless Steel Rat&lt;/i&gt;&lt;/a&gt;.&lt;/p&gt;</content>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Science fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Short stories"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Painters--Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Robots--Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Human-alien encounters--Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Mars (Planet)--Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Alternative histories (Fiction)"/>
+		<category scheme="https://standardebooks.org/vocab/subjects" term="Science Fiction"/>
+		<category scheme="https://standardebooks.org/vocab/subjects" term="Shorts"/>
+		<media:thumbnail height="525" url="https://standardebooks.org/ebooks/harry-harrison/short-fiction/downloads/cover-thumbnail.jpg" width="350"/>
+		<link href="https://standardebooks.org/ebooks/harry-harrison/short-fiction" rel="alternate" title="This ebook’s page at Standard Ebooks" type="application/xhtml+xml"/>
+		<link href="https://standardebooks.org/ebooks/harry-harrison/short-fiction/downloads/harry-harrison_short-fiction.epub?source=feed" length="748319" rel="enclosure" title="Recommended compatible epub" type="application/epub+zip"/>
+		<link href="https://standardebooks.org/ebooks/harry-harrison/short-fiction/downloads/harry-harrison_short-fiction_advanced.epub?source=feed" length="841657" rel="enclosure" title="Advanced epub" type="application/epub+zip"/>
+		<link href="https://standardebooks.org/ebooks/harry-harrison/short-fiction/downloads/harry-harrison_short-fiction.kepub.epub?source=feed" length="749630" rel="enclosure" title="Kobo Kepub epub" type="application/kepub+zip"/>
+		<link href="https://standardebooks.org/ebooks/harry-harrison/short-fiction/downloads/harry-harrison_short-fiction.azw3?source=feed" length="846319" rel="enclosure" title="Amazon Kindle azw3" type="application/x-mobipocket-ebook"/>
+		<link href="https://standardebooks.org/ebooks/harry-harrison/short-fiction/text/single-page" length="359267" rel="enclosure" title="XHTML" type="application/xhtml+xml"/>
+	</entry>
+	<entry>
+		<id>https://standardebooks.org/ebooks/confucius/analects/james-legge</id>
+		<title>Analects</title>
+		<author>
+			<name>Confucius</name>
+			<uri>https://standardebooks.org/ebooks/confucius</uri>
+		</author>
+		<published>2026-06-24T23:04:23Z</published>
+		<updated>2026-06-30T02:48:47Z</updated>
+		<rights>Public domain in the United States. Users located outside of the United States must check their local laws before using this ebook. Original content released to the public domain via the Creative Commons CC0 1.0 Universal Public Domain Dedication.</rights>
+		<summary type="text">The paradigmatic Chinese sage expounds on leading an ethical and fulfilled life.</summary>
+		<content type="html">&lt;p&gt;&lt;a href="https://standardebooks.org/ebooks/confucius"&gt;Confucius&lt;/a&gt; is one of the most influential figures in Chinese philosophy. His teachings are laid out most fully in the &lt;i&gt;Analects&lt;/i&gt;, a compilation of sayings, aphorisms, and ideas organized by his followers after his death.&lt;/p&gt; &lt;p&gt;Modern scholarship suggests that the &lt;i&gt;Analects&lt;/i&gt; were composed over a period of two hundred years, between around 476–221 BC, with the earliest physical evidence dating to around 300 BC. Over time, it became recognized as one of the “Four Books,” alongside the “Five Classics,” which together form the core of the Confucian canon; this canon was the foundation for the Imperial Examinations, the Chinese system for training and selecting bureaucrats that remained in use for over 1,300 years, until the early 20th century. Consequently it has been one of the most read books in China for over two millennia.&lt;/p&gt; &lt;p&gt;The book is organized into a series of chapters, each broadly encompassing an individual theme, but without any particular narrative thread. The content varies widely, from sayings attributed to Confucius by his followers, to descriptions of his everyday life and habits. Some scholars even consider it to be the first book to ever record the life of an important historical figure.&lt;/p&gt; &lt;p&gt;In it, Confucius elaborates on what is the focus of his teachings: the cultivation of virtue, filial piety as a core principal of an ethical life, leading with integrity, and a respect for the rules of propriety. These teachings are what became the basic tenets of Confucianism.&lt;/p&gt; &lt;p&gt;This translation by James Legge, a highly respected Scottish scholar and sinologist, was first published in 1861 and is perhaps the &lt;i&gt;Analects’&lt;/i&gt; first translation to English; it remained popular well into the mid 20th-century.&lt;/p&gt;</content>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Ethics -- China"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Philosophy, Chinese"/>
+		<category scheme="https://standardebooks.org/vocab/subjects" term="Philosophy"/>
+		<media:thumbnail height="525" url="https://standardebooks.org/ebooks/confucius/analects/james-legge/downloads/cover-thumbnail.jpg" width="350"/>
+		<link href="https://standardebooks.org/ebooks/confucius/analects/james-legge" rel="alternate" title="This ebook’s page at Standard Ebooks" type="application/xhtml+xml"/>
+		<link href="https://standardebooks.org/ebooks/confucius/analects/james-legge/downloads/confucius_analects_james-legge.epub?source=feed" length="451305" rel="enclosure" title="Recommended compatible epub" type="application/epub+zip"/>
+		<link href="https://standardebooks.org/ebooks/confucius/analects/james-legge/downloads/confucius_analects_james-legge_advanced.epub?source=feed" length="503781" rel="enclosure" title="Advanced epub" type="application/epub+zip"/>
+		<link href="https://standardebooks.org/ebooks/confucius/analects/james-legge/downloads/confucius_analects_james-legge.kepub.epub?source=feed" length="433628" rel="enclosure" title="Kobo Kepub epub" type="application/kepub+zip"/>
+		<link href="https://standardebooks.org/ebooks/confucius/analects/james-legge/downloads/confucius_analects_james-legge.azw3?source=feed" length="532020" rel="enclosure" title="Amazon Kindle azw3" type="application/x-mobipocket-ebook"/>
+		<link href="https://standardebooks.org/ebooks/confucius/analects/james-legge/text/single-page" length="372323" rel="enclosure" title="XHTML" type="application/xhtml+xml"/>
+	</entry>
+	<entry>
+		<id>https://standardebooks.org/ebooks/ring-lardner_george-s-kaufman/june-moon</id>
+		<title>June Moon</title>
+		<author>
+			<name>Ring Lardner</name>
+			<uri>https://standardebooks.org/ebooks/ring-lardner_george-s-kaufman</uri>
+		</author>
+		<author>
+			<name>George S. Kaufman</name>
+			<uri>https://standardebooks.org/ebooks/ring-lardner_george-s-kaufman</uri>
+		</author>
+		<published>2026-06-23T20:09:47Z</published>
+		<updated>2026-07-06T20:53:28Z</updated>
+		<rights>Public domain in the United States. Users located outside of the United States must check their local laws before using this ebook. Original content released to the public domain via the Creative Commons CC0 1.0 Universal Public Domain Dedication.</rights>
+		<summary type="text">A lyricist moves to New York City aspiring to make it big on Tin Pan Alley.</summary>
+		<content type="html">&lt;p&gt;Fred Stevens, an aspiring lyricist, has quit his job at General Electric and moved from Schenectady to New York City to collaborate with Paul Sears, a one-hit-wonder composer chasing his next big break. Life in New York City proves to be quite a culture shock for Fred as he unwittingly squanders his savings in the New York social scene, egged on by Paul’s wife and sister-in-law, only to ultimately find himself forced to choose between two women.&lt;/p&gt; &lt;p&gt;Based on &lt;a href="https://standardebooks.org/ebooks/ring-lardner"&gt;Ring Lardner’s&lt;/a&gt; 1921 short story “&lt;a href="https://standardebooks.org/ebooks/ring-lardner/short-fiction"&gt;Some Like Them Cold&lt;/a&gt;,” &lt;i&gt;June Moon&lt;/i&gt; satirizes Tin Pan Alley music publishers of the early 20th century and the composers and lyricists in their employ. The play officially opened at the Broadhurst Theatre in New York City on October 9, 1929 and has been adapted numerous times for film, radio, and television.&lt;/p&gt; &lt;p&gt;While &lt;i&gt;June Moon&lt;/i&gt; is unequivocally intended for performance on stage, the script shares stylistic similarities to Lardner’s “nonsense plays,” including the use of dialect-laden spellings of character dialogue and stage directions that, at times, editorialize the onstage action in ways that offer a reader of the script some color that may not be seen in a live performance.&lt;/p&gt;</content>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Drama"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Lyricists"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Composers"/>
+		<category scheme="https://standardebooks.org/vocab/subjects" term="Comedy"/>
+		<category scheme="https://standardebooks.org/vocab/subjects" term="Drama"/>
+		<category scheme="https://standardebooks.org/vocab/subjects" term="Satire"/>
+		<media:thumbnail height="525" url="https://standardebooks.org/ebooks/ring-lardner_george-s-kaufman/june-moon/downloads/cover-thumbnail.jpg" width="350"/>
+		<link href="https://standardebooks.org/ebooks/ring-lardner_george-s-kaufman/june-moon" rel="alternate" title="This ebook’s page at Standard Ebooks" type="application/xhtml+xml"/>
+		<link href="https://standardebooks.org/ebooks/ring-lardner_george-s-kaufman/june-moon/downloads/ring-lardner-george-s-kaufman_june-moon.epub?source=feed" length="373116" rel="enclosure" title="Recommended compatible epub" type="application/epub+zip"/>
+		<link href="https://standardebooks.org/ebooks/ring-lardner_george-s-kaufman/june-moon/downloads/ring-lardner-george-s-kaufman_june-moon_advanced.epub?source=feed" length="581632" rel="enclosure" title="Advanced epub" type="application/epub+zip"/>
+		<link href="https://standardebooks.org/ebooks/ring-lardner_george-s-kaufman/june-moon/downloads/ring-lardner-george-s-kaufman_june-moon.kepub.epub?source=feed" length="368404" rel="enclosure" title="Kobo Kepub epub" type="application/kepub+zip"/>
+		<link href="https://standardebooks.org/ebooks/ring-lardner_george-s-kaufman/june-moon/downloads/ring-lardner-george-s-kaufman_june-moon.azw3?source=feed" length="467195" rel="enclosure" title="Amazon Kindle azw3" type="application/x-mobipocket-ebook"/>
+		<link href="https://standardebooks.org/ebooks/ring-lardner_george-s-kaufman/june-moon/text/single-page" length="367585" rel="enclosure" title="XHTML" type="application/xhtml+xml"/>
+	</entry>
+	<entry>
+		<id>https://standardebooks.org/ebooks/friedrich-engels/the-condition-of-the-working-class-in-england/florence-kelley-wischnewetzky</id>
+		<title>The Condition of the Working Class in England</title>
+		<author>
+			<name>Friedrich Engels</name>
+			<uri>https://standardebooks.org/ebooks/friedrich-engels</uri>
+		</author>
+		<published>2026-06-22T21:32:05Z</published>
+		<updated>2026-06-30T03:19:47Z</updated>
+		<rights>Public domain in the United States. Users located outside of the United States must check their local laws before using this ebook. Original content released to the public domain via the Creative Commons CC0 1.0 Universal Public Domain Dedication.</rights>
+		<summary type="text">A philosopher reports on the state of the proletariat in Victorian England.</summary>
+		<content type="html">&lt;p&gt;In 1842, a young &lt;a href="https://standardebooks.org/ebooks/friedrich-engels"&gt;Friedrich Engels&lt;/a&gt; traveled to England to see the state of the working class in the nation’s rapidly expanding industrial cities. His observations over the course of the next twenty-one months lead to the 1845 publication of &lt;i&gt;The Condition of the Working Class in England&lt;/i&gt;. The book reports on the dire state of the proletariat, contextualizes their struggle within the politics of the time, and makes predictions for how the fragile tension between workers and capitalists must evolve. It remains to this day a highly detailed account of the abuses the industrial revolution brought upon the English working class.&lt;/p&gt; &lt;p&gt;First written for German audiences, the book didn’t see an official English translation until 1885. This edition is based on the 1892 London publication, and contains a preface by Engels explaining how the situation in England evolved in the intervening time, along with a powerful dedication to the workers of England. A major stepping stone on the route to Engel’s and &lt;a href="https://standardebooks.org/ebooks/karl-marx"&gt;Marx’s&lt;/a&gt; &lt;a href="https://standardebooks.org/ebooks/karl-marx_friedrich-engels/the-communist-manifesto/samuel-moore"&gt;&lt;i&gt;Communist Manifesto&lt;/i&gt;&lt;/a&gt;, &lt;i&gt;The Condition of the Working Class in England&lt;/i&gt; has remained in continuous publication.&lt;/p&gt;</content>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Great Britain -- Economic conditions"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Working class -- Great Britain"/>
+		<category scheme="https://standardebooks.org/vocab/subjects" term="Nonfiction"/>
+		<media:thumbnail height="525" url="https://standardebooks.org/ebooks/friedrich-engels/the-condition-of-the-working-class-in-england/florence-kelley-wischnewetzky/downloads/cover-thumbnail.jpg" width="350"/>
+		<link href="https://standardebooks.org/ebooks/friedrich-engels/the-condition-of-the-working-class-in-england/florence-kelley-wischnewetzky" rel="alternate" title="This ebook’s page at Standard Ebooks" type="application/xhtml+xml"/>
+		<link href="https://standardebooks.org/ebooks/friedrich-engels/the-condition-of-the-working-class-in-england/florence-kelley-wischnewetzky/downloads/friedrich-engels_the-condition-of-the-working-class-in-england_florence-kelley-wischnewetzky.epub?source=feed" length="577418" rel="enclosure" title="Recommended compatible epub" type="application/epub+zip"/>
+		<link href="https://standardebooks.org/ebooks/friedrich-engels/the-condition-of-the-working-class-in-england/florence-kelley-wischnewetzky/downloads/friedrich-engels_the-condition-of-the-working-class-in-england_florence-kelley-wischnewetzky_advanced.epub?source=feed" length="1634519" rel="enclosure" title="Advanced epub" type="application/epub+zip"/>
+		<link href="https://standardebooks.org/ebooks/friedrich-engels/the-condition-of-the-working-class-in-england/florence-kelley-wischnewetzky/downloads/friedrich-engels_the-condition-of-the-working-class-in-england_florence-kelley-wischnewetzky.kepub.epub?source=feed" length="561685" rel="enclosure" title="Kobo Kepub epub" type="application/kepub+zip"/>
+		<link href="https://standardebooks.org/ebooks/friedrich-engels/the-condition-of-the-working-class-in-england/florence-kelley-wischnewetzky/downloads/friedrich-engels_the-condition-of-the-working-class-in-england_florence-kelley-wischnewetzky.azw3?source=feed" length="811540" rel="enclosure" title="Amazon Kindle azw3" type="application/x-mobipocket-ebook"/>
+		<link href="https://standardebooks.org/ebooks/friedrich-engels/the-condition-of-the-working-class-in-england/florence-kelley-wischnewetzky/text/single-page" length="866976" rel="enclosure" title="XHTML" type="application/xhtml+xml"/>
+	</entry>
+	<entry>
+		<id>https://standardebooks.org/ebooks/willa-cather/the-professors-house</id>
+		<title>The Professor’s House</title>
+		<author>
+			<name>Willa Cather</name>
+			<uri>https://standardebooks.org/ebooks/willa-cather</uri>
+		</author>
+		<published>2026-06-19T18:51:08Z</published>
+		<updated>2026-07-06T21:33:29Z</updated>
+		<rights>Public domain in the United States. Users located outside of the United States must check their local laws before using this ebook. Original content released to the public domain via the Creative Commons CC0 1.0 Universal Public Domain Dedication.</rights>
+		<summary type="text">As a middle-age professor moves house, he contemplates the legacy of his most brilliant student.</summary>
+		<content type="html">&lt;p&gt;A prestigious award gives the middle-aged professor Godfrey St. Peter the funds to buy a new house, but he’s reluctant to let go of his old one. His wife and two daughters welcome the change, seeing it as a well-deserved step up in the world. St. Peter instead focuses his attention on editing the journals of Tom Outland, his former student and would-be son-in-law—before his life was taken in the Great War. As Outland’s own story unfolds, St. Peter finds himself too consumed by what could have been to move forward.&lt;/p&gt; &lt;p&gt;Published in 1925, &lt;i&gt;The Professor’s House&lt;/i&gt; remains one of &lt;a href="https://standardebooks.org/ebooks/willa-cather"&gt;Willa Cather’s&lt;/a&gt; most understated works. While initially received poorly, it has since risen in stature as one of Cather’s most formally inventive novels.&lt;/p&gt;</content>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Psychological fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Frame stories"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="College teachers -- Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Middle-aged men -- Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Midlife crisis -- Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Teacher-student relationships -- Fiction"/>
+		<category scheme="https://standardebooks.org/vocab/subjects" term="Fiction"/>
+		<media:thumbnail height="525" url="https://standardebooks.org/ebooks/willa-cather/the-professors-house/downloads/cover-thumbnail.jpg" width="350"/>
+		<link href="https://standardebooks.org/ebooks/willa-cather/the-professors-house" rel="alternate" title="This ebook’s page at Standard Ebooks" type="application/xhtml+xml"/>
+		<link href="https://standardebooks.org/ebooks/willa-cather/the-professors-house/downloads/willa-cather_the-professors-house.epub?source=feed" length="674807" rel="enclosure" title="Recommended compatible epub" type="application/epub+zip"/>
+		<link href="https://standardebooks.org/ebooks/willa-cather/the-professors-house/downloads/willa-cather_the-professors-house_advanced.epub?source=feed" length="1195950" rel="enclosure" title="Advanced epub" type="application/epub+zip"/>
+		<link href="https://standardebooks.org/ebooks/willa-cather/the-professors-house/downloads/willa-cather_the-professors-house.kepub.epub?source=feed" length="675277" rel="enclosure" title="Kobo Kepub epub" type="application/kepub+zip"/>
+		<link href="https://standardebooks.org/ebooks/willa-cather/the-professors-house/downloads/willa-cather_the-professors-house.azw3?source=feed" length="773634" rel="enclosure" title="Amazon Kindle azw3" type="application/x-mobipocket-ebook"/>
+		<link href="https://standardebooks.org/ebooks/willa-cather/the-professors-house/text/single-page" length="444395" rel="enclosure" title="XHTML" type="application/xhtml+xml"/>
+	</entry>
+	<entry>
+		<id>https://standardebooks.org/ebooks/ring-lardner/fred-gross-stories</id>
+		<title>Fred Gross Stories</title>
+		<author>
+			<name>Ring Lardner</name>
+			<uri>https://standardebooks.org/ebooks/ring-lardner</uri>
+		</author>
+		<published>2026-06-17T21:04:44Z</published>
+		<updated>2026-06-30T02:48:54Z</updated>
+		<rights>Public domain in the United States. Users located outside of the United States must check their local laws before using this ebook. Original content released to the public domain via the Creative Commons CC0 1.0 Universal Public Domain Dedication.</rights>
+		<summary type="text">A police detective attempts to live the American dream in the Chicago suburbs.</summary>
+		<content type="html">&lt;p&gt;“Well Charley after alls said &amp;amp; did its the only life when you got children &amp;amp; if I was you Id get busy &amp;amp; get in to the game.”&lt;/p&gt; &lt;p&gt;Fred A. Gross, assistant chief of detectives for the Chicago Police Department, is living the American Dream by leaving his South Side Chicago flat to build a house on greener pastures in the suburb of Allison, Illinois. Through a series of letters to his brother Charley in New York, Fred offers a revealing glimpse into the conflicts and schemes of his new life. Whether he’s dealing with dishonest contractors, feuding with his neighbors, or crafting a get-rich-quick scheme in the wartime stock market, Fred holds nothing back and shares almost every detail of his new life with his brother—no matter how those details make him look.&lt;/p&gt; &lt;p&gt;&lt;a href="https://standardebooks.org/ebooks/ring-lardner"&gt;Ring Lardner&lt;/a&gt; originally published the Fred Gross stories in &lt;i&gt;The Red Book Magazine&lt;/i&gt; from 1915–1917. The first four stories were later novelized under the title &lt;i&gt;Own Your Own Home&lt;/i&gt;.&lt;/p&gt; &lt;p&gt;As is often true of protagonists in Lardner’s epistolary stories, Fred Gross writes in an uneducated style and fills the page with countless spelling and grammatical errors. Also in common with Lardner’s other epistolary protagonists, he’s often oblivious to the social happenings around him, remaining blissfully ignorant of the fact that the true villain of his story isn’t his rude neighbors, nor the shady contractors or car salesmen, but rather his own lack of foresight, impulse control, and general social decorum.&lt;/p&gt; &lt;p&gt;Though not as well-known as the &lt;a href="https://standardebooks.org/ebooks/ring-lardner/jack-keefe-stories"&gt;&lt;i&gt;Jack Keefe Stories&lt;/i&gt;&lt;/a&gt;, Fred Gross has a similar sort of hapless incompetence as Keefe, but with middle-class domestic life as the backdrop instead of professional baseball. Readers experience Fred Gross not as a parody of their celebrity idols, but as a parody of themselves and their own social circles.&lt;/p&gt;</content>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Epistolary fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Suburban life--Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Humorous stories"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Home ownership--Fiction"/>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Married people--Fiction"/>
+		<category scheme="https://standardebooks.org/vocab/subjects" term="Comedy"/>
+		<category scheme="https://standardebooks.org/vocab/subjects" term="Fiction"/>
+		<category scheme="https://standardebooks.org/vocab/subjects" term="Satire"/>
+		<category scheme="https://standardebooks.org/vocab/subjects" term="Shorts"/>
+		<media:thumbnail height="525" url="https://standardebooks.org/ebooks/ring-lardner/fred-gross-stories/downloads/cover-thumbnail.jpg" width="350"/>
+		<link href="https://standardebooks.org/ebooks/ring-lardner/fred-gross-stories" rel="alternate" title="This ebook’s page at Standard Ebooks" type="application/xhtml+xml"/>
+		<link href="https://standardebooks.org/ebooks/ring-lardner/fred-gross-stories/downloads/ring-lardner_fred-gross-stories.epub?source=feed" length="583083" rel="enclosure" title="Recommended compatible epub" type="application/epub+zip"/>
+		<link href="https://standardebooks.org/ebooks/ring-lardner/fred-gross-stories/downloads/ring-lardner_fred-gross-stories_advanced.epub?source=feed" length="615650" rel="enclosure" title="Advanced epub" type="application/epub+zip"/>
+		<link href="https://standardebooks.org/ebooks/ring-lardner/fred-gross-stories/downloads/ring-lardner_fred-gross-stories.kepub.epub?source=feed" length="578207" rel="enclosure" title="Kobo Kepub epub" type="application/kepub+zip"/>
+		<link href="https://standardebooks.org/ebooks/ring-lardner/fred-gross-stories/downloads/ring-lardner_fred-gross-stories.azw3?source=feed" length="690659" rel="enclosure" title="Amazon Kindle azw3" type="application/x-mobipocket-ebook"/>
+		<link href="https://standardebooks.org/ebooks/ring-lardner/fred-gross-stories/text/single-page" length="401491" rel="enclosure" title="XHTML" type="application/xhtml+xml"/>
+	</entry>
+</feed>
