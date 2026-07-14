@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://www.idpf.org/2007/opf" dir="ltr" prefix="se: https://standardebooks.org/vocab/1.0 rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#" unique-identifier="uid" version="3.0" xml:lang="en-US">
+	<metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
+		<dc:identifier id="uid">https://standardebooks.org/ebooks/w-e-b-du-bois/the-souls-of-black-folk</dc:identifier>
+		<dc:date>2021-09-30T16:58:53Z</dc:date>
+		<meta property="dcterms:modified">2021-09-30T16:58:53Z</meta>
+		<dc:rights>The source text and artwork in this ebook are believed to be in the United States public domain; that is, they are believed to be free of copyright restrictions in the United States. They may still be copyrighted in other countries, so users located outside of the United States must check their local laws before using this ebook. The creators of, and contributors to, this ebook dedicate their contributions to the worldwide public domain via the terms in the [CC0 1.0 Universal Public Domain Dedication](https://creativecommons.org/publicdomain/zero/1.0/).</dc:rights>
+		<meta property="rdf:type">http://schema.org/Book</meta>
+		<dc:publisher id="publisher">Standard Ebooks</dc:publisher>
+		<meta property="file-as" refines="#publisher">Standard Ebooks</meta>
+		<link href="https://standardebooks.org/" refines="#publisher" rel="schema:url"/>
+		<meta property="role" refines="#publisher" scheme="marc:relators">bkd</meta>
+		<meta property="role" refines="#publisher" scheme="marc:relators">mdc</meta>
+		<meta property="role" refines="#publisher" scheme="marc:relators">pbl</meta>
+		<dc:contributor id="type-designer">The League of Moveable Type</dc:contributor>
+		<meta property="file-as" refines="#type-designer">League of Moveable Type, The</meta>
+		<link href="https://www.theleagueofmoveabletype.com/" refines="#type-designer" rel="schema:url"/>
+		<meta property="role" refines="#type-designer" scheme="marc:relators">tyd</meta>
+		<meta id="conformance-statement" property="dcterms:conformsTo">EPUB Accessibility 1.1 - WCAG 2.2 Level AA</meta>
+		<meta property="a11y:certifiedBy" refines="#conformance-statement">Standard Ebooks</meta>
+		<meta property="schema:accessMode">textual</meta>
+		<meta property="schema:accessMode">visual</meta>
+		<meta property="schema:accessModeSufficient">textual</meta>
+		<meta property="schema:accessibilityFeature">alternativeText</meta>
+		<meta property="schema:accessibilityFeature">displayTransformability</meta>
+		<meta property="schema:accessibilityFeature">readingOrder</meta>
+		<meta property="schema:accessibilityFeature">structuralNavigation</meta>
+		<meta property="schema:accessibilityFeature">tableOfContents</meta>
+		<meta property="schema:accessibilityFeature">unlocked</meta>
+		<meta property="schema:accessibilityHazard">none</meta>
+		<meta property="schema:accessibilitySummary">This publication conforms to WCAG 2.2 Level AA.</meta>
+		<dc:title id="title">The Souls of Black Folk</dc:title>
+		<meta property="file-as" refines="#title">Souls of Black Folk, The</meta>
+		<meta property="title-type" refines="#title">main</meta>
+		<dc:title id="subtitle">Essays and Sketches</dc:title>
+		<meta property="file-as" refines="#subtitle">Essays and Sketches</meta>
+		<meta property="title-type" refines="#subtitle">subtitle</meta>
+		<dc:title id="fulltitle">The Souls of Black Folk: Essays and Sketches</dc:title>
+		<meta property="file-as" refines="#fulltitle">Souls of Black Folk, The</meta>
+		<meta property="title-type" refines="#fulltitle">extended</meta>
+		<dc:subject id="subject-1">African Americans</dc:subject>
+		<meta property="authority" refines="#subject-1">LCSH</meta>
+		<meta property="term" refines="#subject-1">sh85001932</meta>
+		<meta property="schema:genre">Nonfiction</meta>
+		<meta id="collection-1" property="belongs-to-collection">Modern Library’s 100 Best Nonfiction</meta>
+		<meta property="collection-type" refines="#collection-1">set</meta>
+		<meta property="group-position" refines="#collection-1">31</meta>
+		<dc:description id="description">A seminal collection of essays on the African-American experience.</dc:description>
+		<meta id="long-description" property="se:long-description" refines="#description">
+			&lt;p&gt;When it was first published in 1903, &lt;a href="https://standardebooks.org/ebooks/w-e-b-du-bois"&gt;W. E. B Du Bois’s&lt;/a&gt; &lt;i&gt;The Souls of Black Folk&lt;/i&gt; represented a seismic shift in the discussion of race in the United States. Earlier African-American authors had broken ground with memoirs and autobiographical novels—narrative works that portrayed the African-American experience through the stories of particular individuals. What Du Bois envisioned was a work that portrayed the experience of African Americans &lt;em&gt;as a people&lt;/em&gt;.&lt;/p&gt;
+			&lt;p&gt;As a professor of sociology, Du Bois naturally gravitated toward a scientific and scholarly approach. But he was also becoming, to his own surprise, a political activist, and found himself increasingly disenchanted with purely intellectual arguments when his fellow African Americans were being lynched, starved, and driven from their land. What emerged from this tension between scholarly rigor and righteous indignation was a book that became a seminal text for both sociology and for the civil rights movement.&lt;/p&gt;
+			&lt;p&gt;The fourteen essays in this book weave together historical research, sociological analysis, first-hand reportage, political argument, and an enduring, aspirational belief in the possibility of America. Many of the ideas that Du Bois introduced in the book have become mainstays of modern discourse, including the “veil of race” and the concept of double consciousness. These insights, originally rooted in race, have proven resonant to a wide range of other marginalized groups and have provided a useful framework for understanding the nature of oppression and the path to liberation.&lt;/p&gt;
+		</meta>
+		<dc:language>en-US</dc:language>
+		<dc:source>https://www.gutenberg.org/ebooks/408</dc:source>
+		<dc:source>https://catalog.hathitrust.org/Record/100321385</dc:source>
+		<meta property="schema:wordCount">69006</meta>
+		<meta property="schema:educationalLevel">53.34</meta>
+		<link href="https://en.wikipedia.org/wiki/The_Souls_of_Black_Folk" rel="schema:sameAs"/>
+		<meta id="vcs-repository" property="schema:workExample">schema:workExample</meta>
+		<meta property="rdf:type" refines="#vcs-repository">http://schema.org/SoftwareSourceCode</meta>
+		<link href="https://github.com/standardebooks/w-e-b-du-bois_the-souls-of-black-folk" refines="#vcs-repository" rel="schema:codeRepository"/>
+		<dc:creator id="author">W. E. B. Du Bois</dc:creator>
+		<meta property="file-as" refines="#author">Du Bois, W. E. B.</meta>
+		<meta property="schema:alternateName" refines="#author">William Edward Burghardt Du Bois</meta>
+		<link href="https://en.wikipedia.org/wiki/W.E.B._Du_Bois" refines="#author" rel="schema:sameAs"/>
+		<link href="https://id.loc.gov/authorities/names/n80046721.html" refines="#author" rel="schema:sameAs"/>
+		<meta property="role" refines="#author" scheme="marc:relators">aut</meta>
+		<meta property="role" refines="#author" scheme="marc:relators">dto</meta>
+		<meta property="role" refines="#author" scheme="marc:relators">ill</meta>
+		<meta property="role" refines="#author" scheme="marc:relators">waw</meta>
+		<meta property="role" refines="#author" scheme="marc:relators">wpr</meta>
+		<dc:contributor id="artist-1">Adriaen van der Spelt</dc:contributor>
+		<meta property="file-as" refines="#artist-1">Spelt, Adriaen van der</meta>
+		<link href="https://en.wikipedia.org/wiki/Adriaen_van_der_Spelt" refines="#artist-1" rel="schema:sameAs"/>
+		<meta property="role" refines="#artist-1" scheme="marc:relators">art</meta>
+		<dc:contributor id="artist-2">Frans van Mieris</dc:contributor>
+		<meta property="file-as" refines="#artist-2">Mieris, Frans van</meta>
+		<link href="https://en.wikipedia.org/wiki/Frans_van_Mieris_the_Elder" refines="#artist-2" rel="schema:sameAs"/>
+		<link href="https://id.loc.gov/authorities/names/n86864104.html" refines="#artist-2" rel="schema:sameAs"/>
+		<meta property="role" refines="#artist-2" scheme="marc:relators">art</meta>
+		<dc:contributor id="transcriber-1">Anonymous</dc:contributor>
+		<meta property="file-as" refines="#transcriber-1">Anonymous</meta>
+		<meta property="role" refines="#transcriber-1" scheme="marc:relators">trc</meta>
+		<dc:contributor id="producer-1">Zoey Leigh Peterson</dc:contributor>
+		<meta property="file-as" refines="#producer-1">Peterson, Zoey Leigh</meta>
+		<link href="https://www.zoeyleighpeterson.com/" refines="#producer-1" rel="schema:url"/>
+		<meta property="role" refines="#producer-1" scheme="marc:relators">bkp</meta>
+		<meta property="role" refines="#producer-1" scheme="marc:relators">blw</meta>
+		<meta property="role" refines="#producer-1" scheme="marc:relators">cov</meta>
+		<meta property="role" refines="#producer-1" scheme="marc:relators">mcp</meta>
+		<meta property="role" refines="#producer-1" scheme="marc:relators">mrk</meta>
+		<meta property="role" refines="#producer-1" scheme="marc:relators">pfr</meta>
+		<meta property="role" refines="#producer-1" scheme="marc:relators">tyg</meta>
+		<meta property="role" refines="#producer-1" scheme="marc:relators">wat</meta>
+		<dc:contributor id="producer-2">David Grigg</dc:contributor>
+		<meta property="file-as" refines="#producer-2">Grigg, David</meta>
+		<link href="https://thegriggs.org/david/" refines="#producer-2" rel="schema:url"/>
+		<meta property="role" refines="#producer-2" scheme="marc:relators">pfr</meta>
+	</metadata>
+	<manifest>
+		<item href="css/core.css" id="core.css" media-type="text/css"/>
+		<item href="css/local.css" id="local.css" media-type="text/css"/>
+		<item href="css/se.css" id="se.css" media-type="text/css"/>
+		<item href="images/cover.svg" id="cover.svg" media-type="image/svg+xml" properties="cover-image"/>
+		<item href="images/illustration-1.svg" id="illustration-1.svg" media-type="image/svg+xml"/>
+		<item href="images/illustration-2.svg" id="illustration-2.svg" media-type="image/svg+xml"/>
+		<item href="images/illustration-3.svg" id="illustration-3.svg" media-type="image/svg+xml"/>
+		<item href="images/illustration-4.svg" id="illustration-4.svg" media-type="image/svg+xml"/>
+		<item href="images/illustration-5.svg" id="illustration-5.svg" media-type="image/svg+xml"/>
+		<item href="images/illustration-6.svg" id="illustration-6.svg" media-type="image/svg+xml"/>
+		<item href="images/illustration-7.svg" id="illustration-7.svg" media-type="image/svg+xml"/>
+		<item href="images/illustration-8.svg" id="illustration-8.svg" media-type="image/svg+xml"/>
+		<item href="images/illustration-9.svg" id="illustration-9.svg" media-type="image/svg+xml"/>
+		<item href="images/illustration-10.svg" id="illustration-10.svg" media-type="image/svg+xml"/>
+		<item href="images/illustration-11.svg" id="illustration-11.svg" media-type="image/svg+xml"/>
+		<item href="images/illustration-12.svg" id="illustration-12.svg" media-type="image/svg+xml"/>
+		<item href="images/illustration-13.svg" id="illustration-13.svg" media-type="image/svg+xml"/>
+		<item href="images/illustration-14.svg" id="illustration-14.svg" media-type="image/svg+xml"/>
+		<item href="images/illustration-15.svg" id="illustration-15.svg" media-type="image/svg+xml"/>
+		<item href="images/illustration-16.svg" id="illustration-16.svg" media-type="image/svg+xml"/>
+		<item href="images/illustration-17.svg" id="illustration-17.svg" media-type="image/svg+xml"/>
+		<item href="images/illustration-18.svg" id="illustration-18.svg" media-type="image/svg+xml"/>
+		<item href="images/logo.svg" id="logo.svg" media-type="image/svg+xml"/>
+		<item href="images/titlepage.svg" id="titlepage.svg" media-type="image/svg+xml"/>
+		<item href="text/colophon.xhtml" id="colophon.xhtml" media-type="application/xhtml+xml" properties="svg"/>
+		<item href="text/dedication.xhtml" id="dedication.xhtml" media-type="application/xhtml+xml"/>
+		<item href="text/halftitlepage.xhtml" id="halftitlepage.xhtml" media-type="application/xhtml+xml"/>
+		<item href="text/imprint.xhtml" id="imprint.xhtml" media-type="application/xhtml+xml" properties="svg"/>
+		<item href="text/of-alexander-crummell.xhtml" id="of-alexander-crummell.xhtml" media-type="application/xhtml+xml" properties="svg"/>
+		<item href="text/of-mr-booker-t-washington-and-others.xhtml" id="of-mr-booker-t-washington-and-others.xhtml" media-type="application/xhtml+xml" properties="svg"/>
+		<item href="text/of-our-spiritual-strivings.xhtml" id="of-our-spiritual-strivings.xhtml" media-type="application/xhtml+xml" properties="svg"/>
+		<item href="text/of-the-black-belt.xhtml" id="of-the-black-belt.xhtml" media-type="application/xhtml+xml" properties="svg"/>
+		<item href="text/of-the-coming-of-john.xhtml" id="of-the-coming-of-john.xhtml" media-type="application/xhtml+xml" properties="svg"/>
+		<item href="text/of-the-dawn-of-freedom.xhtml" id="of-the-dawn-of-freedom.xhtml" media-type="application/xhtml+xml" properties="svg"/>
+		<item href="text/of-the-faith-of-the-fathers.xhtml" id="of-the-faith-of-the-fathers.xhtml" media-type="application/xhtml+xml" properties="svg"/>
+		<item href="text/of-the-meaning-of-progress.xhtml" id="of-the-meaning-of-progress.xhtml" media-type="application/xhtml+xml" properties="svg"/>
+		<item href="text/of-the-passing-of-the-first-born.xhtml" id="of-the-passing-of-the-first-born.xhtml" media-type="application/xhtml+xml" properties="svg"/>
+		<item href="text/of-the-quest-of-the-golden-fleece.xhtml" id="of-the-quest-of-the-golden-fleece.xhtml" media-type="application/xhtml+xml" properties="svg"/>
+		<item href="text/of-the-sons-of-master-and-man.xhtml" id="of-the-sons-of-master-and-man.xhtml" media-type="application/xhtml+xml" properties="svg"/>
+		<item href="text/of-the-training-of-black-men.xhtml" id="of-the-training-of-black-men.xhtml" media-type="application/xhtml+xml" properties="svg"/>
+		<item href="text/of-the-wings-of-atalanta.xhtml" id="of-the-wings-of-atalanta.xhtml" media-type="application/xhtml+xml" properties="svg"/>
+		<item href="text/the-afterthought.xhtml" id="the-afterthought.xhtml" media-type="application/xhtml+xml"/>
+		<item href="text/the-forethought.xhtml" id="the-forethought.xhtml" media-type="application/xhtml+xml"/>
+		<item href="text/the-sorrow-songs.xhtml" id="the-sorrow-songs.xhtml" media-type="application/xhtml+xml" properties="svg"/>
+		<item href="text/titlepage.xhtml" id="titlepage.xhtml" media-type="application/xhtml+xml" properties="svg"/>
+		<item href="text/uncopyright.xhtml" id="uncopyright.xhtml" media-type="application/xhtml+xml"/>
+		<item href="toc.xhtml" id="toc.xhtml" media-type="application/xhtml+xml" properties="nav"/>
+	</manifest>
+	<spine>
+		<itemref idref="titlepage.xhtml"/>
+		<itemref idref="imprint.xhtml"/>
+		<itemref idref="dedication.xhtml"/>
+		<itemref idref="the-forethought.xhtml"/>
+		<itemref idref="halftitlepage.xhtml"/>
+		<itemref idref="of-our-spiritual-strivings.xhtml"/>
+		<itemref idref="of-the-dawn-of-freedom.xhtml"/>
+		<itemref idref="of-mr-booker-t-washington-and-others.xhtml"/>
+		<itemref idref="of-the-meaning-of-progress.xhtml"/>
+		<itemref idref="of-the-wings-of-atalanta.xhtml"/>
+		<itemref idref="of-the-training-of-black-men.xhtml"/>
+		<itemref idref="of-the-black-belt.xhtml"/>
+		<itemref idref="of-the-quest-of-the-golden-fleece.xhtml"/>
+		<itemref idref="of-the-sons-of-master-and-man.xhtml"/>
+		<itemref idref="of-the-faith-of-the-fathers.xhtml"/>
+		<itemref idref="of-the-passing-of-the-first-born.xhtml"/>
+		<itemref idref="of-alexander-crummell.xhtml"/>
+		<itemref idref="of-the-coming-of-john.xhtml"/>
+		<itemref idref="the-sorrow-songs.xhtml"/>
+		<itemref idref="the-afterthought.xhtml"/>
+		<itemref idref="colophon.xhtml"/>
+		<itemref idref="uncopyright.xhtml"/>
+	</spine>
+</package>
