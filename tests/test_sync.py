@@ -39,8 +39,21 @@ class FakeClient:
         self._edition_state.setdefault(edition_id, {}).update(dto)
         return {"id": edition_id}
 
+    def edition_contributions(self, edition_id):
+        return (self._edition_state.get(edition_id) or {}).get("contributions") or []
+
     def edition_fields(self, edition_id):
         return self._edition_state.get(edition_id)
+
+    def resolve_author_id(self, name):
+        # Deterministic fake ids keyed off the name.
+        return 900 + (abs(hash(name)) % 100)
+
+    def insert_book_with_edition(self, dto):
+        self._next_edition_id += 1
+        eid = self._next_edition_id
+        self._edition_state[eid] = dict(dto)
+        return {"id": eid, "edition": {"id": eid, "book_id": 7000 + eid}}
 
 
 def _se(title="The Brothers Karamazov", author="Fyodor Dostoevsky"):

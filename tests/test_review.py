@@ -45,3 +45,23 @@ def test_attach_without_book_id_raises(tmp_path):
         import pytest
         with pytest.raises(ValueError):
             resolve_review_item(store, client, REF, se_url, "attach")
+
+
+def test_create_new_book_sets_authors(tmp_path):
+    from se_hardcover.models import Contributor, SeBook
+    client = FakeClient([])
+    with Store(tmp_path / "s.sqlite3") as store:
+        se_url = "https://standardebooks.org/ebooks/x/short-fiction"
+        store.upsert_book(SeBook(
+            se_url=se_url, repo="x_short-fiction", title="Short Fiction",
+            contributors=[Contributor(name="Some Author", role="aut"),
+                          Contributor(name="A Translator", role="trl")],
+            release_date="2020-01-01", cover_url="https://ex/c.jpg"))
+        store.enqueue_review(se_url, "Short Fiction", "no match", [])
+        res = resolve_review_item(store, client, REF, se_url, "create")
+        assert res.action == "create"
+        # The new edition carries contributions for both the author and translator.
+        contribs = client.edition_fields(res.edition_id).get("contributions")
+        assert contribs and len(contribs) == 2
+        assert any(c.get("contribution") == "Translator" for c in contribs)
+        assert store.pending_reviews() == []
