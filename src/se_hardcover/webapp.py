@@ -32,6 +32,17 @@ from .sync import RefData, resolve_ref_data
 logger = logging.getLogger(__name__)
 
 
+# SE compilation titles — usually a "Create new Hardcover book".
+_COLLECTION_TITLES = {
+    "short fiction", "poetry", "poems", "collected poems", "essays",
+    "short stories", "stories", "tales", "plays", "letters",
+}
+
+
+def _is_collection_title(title: str) -> bool:
+    return (title or "").strip().lower() in _COLLECTION_TITLES
+
+
 class ResolveRequest(BaseModel):
     se_url: str
     action: str  # attach | create | skip
@@ -91,6 +102,7 @@ def create_app(
                     "title": item["title"],
                     "reason": item["reason"],
                     "candidates": item["candidates"],
+                    "is_collection": _is_collection_title(item["title"]),
                     "se": {
                         "author": ", ".join(book.author_names) if book else "",
                         "subtitle": book.subtitle if book else "",
@@ -98,7 +110,11 @@ def create_app(
                         "cover_url": book.cover_url if book else "",
                     },
                 })
-            return JSONResponse({"count": len(items), "items": items})
+            # Surface SE compilation works (Short Fiction, Poetry, …) first — they
+            # are almost always a "Create new Hardcover book".
+            items.sort(key=lambda i: not i["is_collection"])
+            n_coll = sum(1 for i in items if i["is_collection"])
+            return JSONResponse({"count": len(items), "collections": n_coll, "items": items})
 
     @app.post("/api/queue/refresh")
     def refresh() -> JSONResponse:

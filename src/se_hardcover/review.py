@@ -13,7 +13,7 @@ from __future__ import annotations
 import logging
 from dataclasses import dataclass
 
-from .hardcover import HardcoverClient
+from .hardcover import HardcoverClient, se_contributions_to_dto
 from .models import SeBook
 from .state import Store
 from .sync import RefData, build_edition_dto, create_se_edition, finalize_edition
@@ -113,4 +113,29 @@ def _create_new_book(
     edition_id = result.get("id") or new_edition.get("id")
     book_id = new_edition.get("book_id")
     cover_detail = finalize_edition(book, client, ref, edition_id) if edition_id else "no edition"
+    if edition_id:
+        set_book_authors(client, edition_id, book)
     return book_id, edition_id, cover_detail
+
+
+def set_book_authors(client: HardcoverClient, edition_id: int, book: SeBook) -> None:
+    """Attach the SE book's contributors to a newly-created book.
+
+    A new Hardcover book starts with no author; setting the contributions on its
+    edition surfaces the authors (and translators) on the book itself. Without
+    this, created books are authorless — unfindable and duplicate-prone.
+    """
+    contributions = se_contributions_to_dto(book.contributors, client.resolve_author_id)
+    if not contributions:
+        logger.warning("No resolvable authors for %s; book will be authorless", book.se_url)
+        return
+    # update_edition occasionally drops the write; verify the authors persisted.
+    for attempt in range(3):
+        client.update_edition(edition_id, {"contributions": contributions})
+        if client.edition_contributions(edition_id):
+            return
+        logger.warning(
+            "Author write did not persist for edition %s (attempt %d); retrying",
+            edition_id, attempt + 1,
+        )
+    logger.error("Failed to set authors on edition %s (%s)", edition_id, book.se_url)

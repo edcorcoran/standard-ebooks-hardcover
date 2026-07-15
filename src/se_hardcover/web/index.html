@@ -41,6 +41,9 @@
   .muted { color: var(--muted); font-size: 13px; }
   .reason { display: inline-block; margin-top: 6px; padding: 2px 9px; border-radius: 20px;
     background: var(--chip); font-size: 12px; color: var(--muted); }
+  .badge-coll { display: inline-block; margin-left: 8px; padding: 2px 9px; border-radius: 20px;
+    background: var(--good); color: #fff; font-size: 12px; font-weight: 600; }
+  .card.coll { border-color: var(--good); }
   a { color: var(--accent); text-decoration: none; }
   a:hover { text-decoration: underline; }
   .cands { margin-top: 14px; display: grid; gap: 10px; }
@@ -92,7 +95,10 @@
 </header>
 <main>
   <section id="queue">
-    <div class="qtools"><button id="refreshbtn" class="ghost">↻ Re-score queue with current matcher</button></div>
+    <div class="qtools">
+      <span class="muted" id="collnote" style="margin-right:auto"></span>
+      <button id="refreshbtn" class="ghost">↻ Re-score queue with current matcher</button>
+    </div>
     <div id="qlist"><div class="spin">Loading review queue…</div></div>
   </section>
   <section id="audit" hidden><div class="spin">Loading audit…</div></section>
@@ -134,6 +140,9 @@ async function loadQueue() {
   try {
     const data = await api("/api/queue");
     $("#qcount").textContent = data.count;
+    $("#collnote").textContent = data.collections
+      ? `${data.collections} SE collection(s) at the top — usually "Create new"`
+      : "";
     const root = $("#qlist"); root.innerHTML = "";
     if (!data.count) { root.appendChild(el("div", "empty", "🎉 Review queue is empty.")); return; }
     data.items.forEach(item => root.appendChild(queueCard(item)));
@@ -149,12 +158,14 @@ $("#refreshbtn").onclick = async (ev) => {
   finally { b.disabled = false; b.textContent = orig; }
 };
 function queueCard(item) {
-  const card = el("div", "card"); card.dataset.se = item.se_url;
+  const card = el("div", "card" + (item.is_collection ? " coll" : "")); card.dataset.se = item.se_url;
   const row = el("div", "row");
   const cov = el("img", "cover"); cov.src = item.se.cover_url || ""; cov.alt = "";
   row.appendChild(cov);
   const info = el("div", "grow");
-  info.appendChild(el("div", "title", item.title + (item.se.subtitle ? ": " + item.se.subtitle : "")));
+  const titleEl = el("div", "title", item.title + (item.se.subtitle ? ": " + item.se.subtitle : ""));
+  if (item.is_collection) titleEl.appendChild(el("span", "badge-coll", "SE collection → Create new"));
+  info.appendChild(titleEl);
   info.appendChild(el("div", "muted", [item.se.author, item.se.release_date].filter(Boolean).join(" · ")));
   const link = el("a", null, "Standard Ebooks ↗"); link.href = item.se_url; link.target = "_blank";
   info.appendChild(link);
@@ -184,7 +195,7 @@ function queueCard(item) {
 
   const act = el("div", "actions");
   const create = el("button", "good", "＋ Create new Hardcover book");
-  create.onclick = () => { if (confirm(`Create a NEW Hardcover book for "${item.title}"?`)) resolve(card, item.se_url, "create", null, create); };
+  create.onclick = () => resolve(card, item.se_url, "create", null, create);
   const skip = el("button", "ghost", "Skip");
   skip.onclick = () => resolve(card, item.se_url, "skip", null, skip);
   act.appendChild(create); act.appendChild(skip);

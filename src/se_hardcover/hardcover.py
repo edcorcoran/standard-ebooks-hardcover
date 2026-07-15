@@ -253,6 +253,16 @@ class HardcoverClient:
         rows = data.get("editions", [])
         return rows[0] if rows else None
 
+    def edition_contributions(self, edition_id: int) -> list[dict[str, Any]]:
+        """The contributions on an edition — used to verify an author write stuck."""
+        data = self.execute(
+            "query ($id: Int!) { editions(where: {id: {_eq: $id}}) "
+            "{ contributions { author { name } } } }",
+            {"id": edition_id},
+        )
+        rows = data.get("editions", [])
+        return (rows[0].get("contributions") or []) if rows else []
+
     def book_by_id(self, book_id: int) -> dict[str, Any] | None:
         data = self.execute(
             """
@@ -267,6 +277,36 @@ class HardcoverClient:
         )
         rows = data.get("books", [])
         return rows[0] if rows else None
+
+    def resolve_author_id(self, name: str) -> int | None:
+        """Find the canonical Hardcover author id for a name, creating if absent.
+
+        Author names collide (many 0-book duplicate records), so we pick the
+        exact-name match with the most books. Only when there is no match at all
+        do we create the author — SE's authors are public-domain and almost
+        always already present, so creation is rare.
+        """
+        if not name:
+            return None
+        data = self.execute(
+            "query ($n: String!) { authors(where: {name: {_eq: $n}}) { id books_count } }",
+            {"n": name},
+        )
+        rows = data.get("authors", [])
+        if rows:
+            return max(rows, key=lambda a: a.get("books_count") or 0)["id"]
+
+        # No exact match — create a clean author record. We deliberately do NOT
+        # fuzzy-search here: Hardcover has junk "author" records whose name is a
+        # comma-joined list of people, and fuzzy search matches them, producing
+        # wildly wrong attributions. A fresh, correctly-named author is safer.
+        logger.info("Creating new Hardcover author: %r", name)
+        created = self.execute(
+            "mutation ($o: AuthorInputType!) { insert_author(object: $o) { id } }",
+            {"o": {"name": name}},
+            is_mutation=True,
+        )
+        return (created.get("insert_author") or {}).get("id")
 
     def books_with_covers(self, book_ids: list[int]) -> dict[int, dict[str, Any]]:
         """Batch-fetch {id: {slug, title, image_url}} for review-UI candidates."""
