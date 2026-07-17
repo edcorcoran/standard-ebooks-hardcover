@@ -81,6 +81,43 @@ def test_refresh_rescans_queue_candidates(tmp_path):
     assert item["candidates"][0]["id"] == 7
 
 
+def test_auto_create_orphans_creates_no_match_items(tmp_path):
+    # Search returns only an authorless junk stub -> no attach target -> the
+    # endpoint creates a new book and clears the item from the queue.
+    from se_hardcover.models import HardcoverBookMatch
+
+    class OrphanClient(QueueFakeClient):
+        def search_books(self, query, per_page=10):
+            return [HardcoverBookMatch(id=1, title="A Book", slug="stub",
+                                       author_names=[], users_count=0)]
+
+    client = OrphanClient([])
+    app, _ = _app(tmp_path, client)
+    c = TestClient(app)
+    r = c.post("/api/queue/auto-create")
+    assert r.status_code == 200
+    assert r.json()["created_count"] == 1
+    assert r.json()["left"] == 0
+    assert c.get("/api/queue").json()["count"] == 0
+
+
+def test_auto_create_orphans_leaves_real_candidates(tmp_path):
+    # A genuine same-author, same-title candidate is an attach target -> it stays
+    # in the queue for a human rather than being auto-created.
+    from se_hardcover.models import HardcoverBookMatch
+
+    class RealCandidateClient(QueueFakeClient):
+        def search_books(self, query, per_page=10):
+            return [HardcoverBookMatch(id=7, title="A Book", slug="a-book",
+                                       author_names=["Jane Doe"], users_count=300)]
+
+    app, _ = _app(tmp_path, RealCandidateClient([]))
+    c = TestClient(app)
+    r = c.post("/api/queue/auto-create")
+    assert r.json()["created_count"] == 0
+    assert c.get("/api/queue").json()["count"] == 1
+
+
 def test_index_html_served(tmp_path):
     app, _ = _app(tmp_path, QueueFakeClient([]))
     c = TestClient(app)

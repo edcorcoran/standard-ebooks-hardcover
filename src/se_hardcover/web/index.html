@@ -97,6 +97,7 @@
   <section id="queue">
     <div class="qtools">
       <span class="muted" id="collnote" style="margin-right:auto"></span>
+      <button id="autocreatebtn" class="good">＋ Auto-create all with no match</button>
       <button id="refreshbtn" class="ghost">↻ Re-score queue with current matcher</button>
     </div>
     <div id="qlist"><div class="spin">Loading review queue…</div></div>
@@ -155,6 +156,17 @@ $("#refreshbtn").onclick = async (ev) => {
     toast(`Re-scored ${r.updated} items — ${r.now_confident} now match confidently`);
     await loadQueue();
   } catch (e) { toast("Refresh failed: " + e.message, true); }
+  finally { b.disabled = false; b.textContent = orig; }
+};
+$("#autocreatebtn").onclick = async (ev) => {
+  if (!confirm("Create a new Hardcover book for every queued item that has no real "
+             + "match to attach to? Items with a genuine candidate stay in the queue.")) return;
+  const b = ev.target; b.disabled = true; const orig = b.textContent; b.textContent = "Creating…";
+  try {
+    const r = await api("/api/queue/auto-create", { method: "POST" });
+    toast(`Created ${r.created_count} new book(s); ${r.left} left to review`);
+    await loadQueue();
+  } catch (e) { toast("Auto-create failed: " + e.message, true); }
   finally { b.disabled = false; b.textContent = orig; }
 };
 function queueCard(item) {

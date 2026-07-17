@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import csv
 import logging
+import threading
 from functools import lru_cache
 from importlib import resources
 from pathlib import Path
@@ -25,7 +26,7 @@ from .audit import CSV_FIELDS
 from .audit import apply_fixes as apply_fixes_impl
 from .config import Settings, load_settings
 from .hardcover import HardcoverClient
-from .review import refresh_queue, resolve_review_item
+from .review import auto_create_orphans, refresh_queue, resolve_review_item
 from .state import Store
 from .sync import RefData, resolve_ref_data
 
@@ -62,6 +63,12 @@ def create_app(
     settings = settings or load_settings()
     audit_csv = audit_csv or Path("audit-report.csv")
     app = FastAPI(title="se-hardcover review")
+    # Guards the bulk auto-create endpoint against overlapping runs.
+    _auto_create_lock = threading.Lock()
+    # Candidate-book metadata (slug/title/cover) barely changes; caching it means
+    # /api/queue only asks Hardcover about ids it has never seen, instead of
+    # re-fetching every candidate on every page load (8s+ when the API is slow).
+    _covers_cache: dict[int, dict[str, Any]] = {}
 
     # Resolve Hardcover reference data / client lazily and cache it, so the app
     # starts even before a token is needed (and a bad token surfaces per-request).
@@ -81,14 +88,18 @@ def create_app(
     def get_queue() -> JSONResponse:
         with Store(settings.state_db_path) as store:
             pending = store.pending_reviews()
-            # Enrich candidates with covers + hardcover URLs (one batched query).
-            covers: dict[int, dict[str, Any]] = {}
-            try:
-                client, _ = _client_and_ref()
-                ids = [c["id"] for item in pending for c in item["candidates"]]
-                covers = client.books_with_covers(sorted(set(ids)))
-            except Exception as exc:  # covers are a nicety; queue still loads
-                logger.warning("Could not fetch candidate covers: %s", exc)
+            # Enrich candidates with covers + hardcover URLs. Cached: only ids not
+            # seen this session are fetched (one batched query), so repeat loads
+            # cost zero Hardcover round-trips.
+            ids = {c["id"] for item in pending for c in item["candidates"]}
+            missing = sorted(ids - _covers_cache.keys())
+            if missing:
+                try:
+                    client, _ = _client_and_ref()
+                    _covers_cache.update(client.books_with_covers(missing))
+                except Exception as exc:  # covers are a nicety; queue still loads
+                    logger.warning("Could not fetch candidate covers: %s", exc)
+            covers = _covers_cache
 
             items = []
             for item in pending:
@@ -125,6 +136,28 @@ def create_app(
         except Exception as exc:
             logger.exception("queue refresh failed")
             raise HTTPException(400, str(exc)) from exc
+        return JSONResponse(summary)
+
+    @app.post("/api/queue/auto-create")
+    def auto_create() -> JSONResponse:
+        """Create new books for every queued item with no real attach target.
+
+        Single-flight: a bulk create is a long-running, book-writing operation, so
+        a second overlapping call (e.g. an impatient click, or a page refresh that
+        re-fires requests) is rejected rather than run concurrently — concurrent
+        drains are what produced duplicate books.
+        """
+        if not _auto_create_lock.acquire(blocking=False):
+            raise HTTPException(409, "An auto-create run is already in progress.")
+        try:
+            client, ref = _client_and_ref()
+            with Store(settings.state_db_path) as store:
+                summary = auto_create_orphans(store, client, ref)
+        except Exception as exc:
+            logger.exception("auto-create failed")
+            raise HTTPException(400, str(exc)) from exc
+        finally:
+            _auto_create_lock.release()
         return JSONResponse(summary)
 
     @app.post("/api/queue/resolve")

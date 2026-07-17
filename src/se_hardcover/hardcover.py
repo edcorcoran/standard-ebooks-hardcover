@@ -13,6 +13,7 @@ inline and close to their callers so they are easy to adjust.
 from __future__ import annotations
 
 import logging
+import threading
 import time
 from typing import Any
 
@@ -60,6 +61,12 @@ class HardcoverClient:
         self.dry_run = dry_run
         self._min_interval = min_interval
         self._last_call = 0.0
+        # Serializes every request across threads. FastAPI runs sync endpoints in
+        # a threadpool, so two overlapping requests (e.g. a create loop plus a
+        # page refresh) share this one client; without the lock they race the
+        # throttle, burst past Hardcover's 60/min cap, and trigger 429s — which
+        # in turn make non-idempotent create mutations retry and duplicate.
+        self._request_lock = threading.RLock()
         # Hardcover accepts the raw token in the `authorization` header. It also
         # accepts a "Bearer " prefix; we add it if the user did not.
         auth = token if token.lower().startswith("bearer ") else f"Bearer {token}"
@@ -91,11 +98,24 @@ class HardcoverClient:
         self._last_call = time.monotonic()
 
     def execute(
-        self, query: str, variables: dict[str, Any] | None = None, *, is_mutation: bool = False
+        self,
+        query: str,
+        variables: dict[str, Any] | None = None,
+        *,
+        is_mutation: bool = False,
+        idempotent: bool = True,
     ) -> dict[str, Any]:
         """Run a GraphQL document and return its ``data`` payload.
 
-        Mutations are blocked when ``dry_run`` is set.
+        Mutations are blocked when ``dry_run`` is set. Every call is serialized
+        through ``self._request_lock`` so concurrent threads never burst past the
+        rate limit.
+
+        ``idempotent`` guards retries: reads and updates are safe to replay, but a
+        *create* (``insert_book``/``insert_edition``/``insert_image``) that reached
+        the server and then returned a transient error MUST NOT be retried — the
+        replay would create a duplicate. For those we pass ``idempotent=False`` so
+        a transient failure raises instead of silently duplicating.
         """
         if is_mutation and self.dry_run:
             raise DryRunMutation()
@@ -104,44 +124,58 @@ class HardcoverClient:
         backoff = 2.0
         last_exc: Exception | None = None
 
-        for attempt in range(1, MAX_RETRIES + 1):
-            self._throttle()
-            try:
-                resp = self._client.post("", json=payload)
-            except httpx.TransportError as exc:  # network hiccup
-                last_exc = exc
-                logger.warning("Transport error (attempt %d): %s", attempt, exc)
-                time.sleep(backoff)
-                backoff *= 2
-                continue
-
-            if resp.status_code == 401:
-                raise HardcoverAuthError("401 Unauthorized — token expired or invalid.")
-            # 408 (request timeout) and 429/5xx are transient — back off and retry.
-            if resp.status_code in (408, 429) or resp.status_code >= 500:
-                retry_after = float(resp.headers.get("retry-after", backoff))
-                logger.warning(
-                    "HTTP %d from Hardcover (attempt %d); sleeping %.1fs",
-                    resp.status_code,
-                    attempt,
-                    retry_after,
-                )
-                time.sleep(retry_after)
-                backoff *= 2
-                continue
-            if resp.status_code != 200:
-                raise HardcoverError(f"HTTP {resp.status_code}: {resp.text[:300]}")
-
-            body = resp.json()
-            if body.get("errors"):
-                msg = "; ".join(e.get("message", str(e)) for e in body["errors"])
-                # Rate-limit errors sometimes arrive as 200 + errors.
-                if "throttl" in msg.lower():
+        with self._request_lock:
+            for attempt in range(1, MAX_RETRIES + 1):
+                self._throttle()
+                try:
+                    resp = self._client.post("", json=payload)
+                except httpx.TransportError as exc:  # network hiccup
+                    last_exc = exc
+                    logger.warning("Transport error (attempt %d): %s", attempt, exc)
+                    if not idempotent:
+                        raise HardcoverError(
+                            f"Transport error on a non-idempotent mutation "
+                            f"(not retried to avoid a duplicate): {exc}"
+                        ) from exc
                     time.sleep(backoff)
                     backoff *= 2
                     continue
-                raise HardcoverError(msg)
-            return body.get("data", {})
+
+                if resp.status_code == 401:
+                    raise HardcoverAuthError("401 Unauthorized — token expired or invalid.")
+                # 408 (request timeout) and 429/5xx are transient.
+                if resp.status_code in (408, 429) or resp.status_code >= 500:
+                    if not idempotent:
+                        # The create may have committed server-side; retrying would
+                        # duplicate it. Fail loudly and let the caller/queue retry
+                        # this whole item later instead.
+                        raise HardcoverError(
+                            f"HTTP {resp.status_code} on a non-idempotent mutation "
+                            f"(not retried to avoid a duplicate)."
+                        )
+                    retry_after = float(resp.headers.get("retry-after", backoff))
+                    logger.warning(
+                        "HTTP %d from Hardcover (attempt %d); sleeping %.1fs",
+                        resp.status_code,
+                        attempt,
+                        retry_after,
+                    )
+                    time.sleep(retry_after)
+                    backoff *= 2
+                    continue
+                if resp.status_code != 200:
+                    raise HardcoverError(f"HTTP {resp.status_code}: {resp.text[:300]}")
+
+                body = resp.json()
+                if body.get("errors"):
+                    msg = "; ".join(e.get("message", str(e)) for e in body["errors"])
+                    # Rate-limit errors sometimes arrive as 200 + errors.
+                    if "throttl" in msg.lower() and idempotent:
+                        time.sleep(backoff)
+                        backoff *= 2
+                        continue
+                    raise HardcoverError(msg)
+                return body.get("data", {})
 
         raise HardcoverError(
             f"Exhausted {MAX_RETRIES} retries. Last error: {last_exc}"
@@ -305,6 +339,7 @@ class HardcoverClient:
             "mutation ($o: AuthorInputType!) { insert_author(object: $o) { id } }",
             {"o": {"name": name}},
             is_mutation=True,
+            idempotent=False,
         )
         return (created.get("insert_author") or {}).get("id")
 
@@ -355,6 +390,7 @@ class HardcoverClient:
             """,
             {"book_id": book_id, "edition": {"book_id": book_id, "dto": dto}},
             is_mutation=True,
+            idempotent=False,
         )
         result = data.get("insert_edition") or {}
         if result.get("errors"):
@@ -386,6 +422,7 @@ class HardcoverClient:
             """,
             {"edition": {"dto": dto}},
             is_mutation=True,
+            idempotent=False,
         )
         result = data.get("insert_book") or {}
         if result.get("errors"):
@@ -408,6 +445,7 @@ class HardcoverClient:
                 }
             },
             is_mutation=True,
+            idempotent=False,
         )
         result = data.get("insert_image") or {}
         image_id = result.get("id")

@@ -47,6 +47,23 @@ def test_attach_without_book_id_raises(tmp_path):
             resolve_review_item(store, client, REF, se_url, "attach")
 
 
+def test_repeated_create_is_a_noop_and_does_not_duplicate(tmp_path):
+    # A second create for an already-added item (double-click / retry / concurrent
+    # run) must NOT create a second Hardcover book — the guard returns a no-op.
+    client = FakeClient([])
+    with Store(tmp_path / "s.sqlite3") as store:
+        se_url = _seed(store)
+        first = resolve_review_item(store, client, REF, se_url, "create")
+        assert store.is_done(se_url)
+        n_books_after_first = client._next_edition_id
+
+        second = resolve_review_item(store, client, REF, se_url, "create")
+        assert "no-op" in second.detail
+        assert second.book_id == first.book_id
+        # No new book/edition ids were consumed on the second call.
+        assert client._next_edition_id == n_books_after_first
+
+
 def test_create_new_book_sets_authors(tmp_path):
     from se_hardcover.models import Contributor, SeBook
     client = FakeClient([])

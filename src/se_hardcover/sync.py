@@ -96,6 +96,7 @@ def resolve_ref_data(
 
 class Outcome(StrEnum):
     ADDED = "added"
+    CREATED = "created"  # no attach target existed -> a new Hardcover book was created
     SKIPPED_EXISTING = "skipped_existing"
     QUEUED = "queued"
     ERROR = "error"
@@ -155,7 +156,29 @@ def sync_book(
         store.mark_processed(book.se_url, "error", detail=f"search: {exc}")
         return SyncResult(book.se_url, Outcome.ERROR, detail=str(exc))
 
-    # 2. No confident match -> review queue.
+    # 2. Nothing plausible to attach to -> create a fresh Hardcover book.
+    if result.decision == MatchDecision.CREATE:
+        from .review import _create_new_book
+
+        try:
+            new_book_id, edition_id, cover_detail = _create_new_book(book, client, ref)
+        except DryRunMutation:
+            logger.info("[dry-run] would create new book for %s", book.title)
+            return SyncResult(book.se_url, Outcome.DRY_RUN, detail="would insert_book")
+        except Exception as exc:
+            store.mark_processed(book.se_url, "error", detail=f"insert_book: {exc}")
+            notifier.error("insert_book", f"{book.title}: {exc}")
+            return SyncResult(book.se_url, Outcome.ERROR, detail=str(exc))
+        store.mark_processed(
+            book.se_url, "added", book_id=new_book_id, edition_id=edition_id,
+            detail=f"created:{cover_detail}",
+        )
+        notifier.added(f"{book.title} (new book)",
+                       f"https://hardcover.app/books/{new_book_id}")
+        return SyncResult(book.se_url, Outcome.CREATED, book_id=new_book_id,
+                          edition_id=edition_id, detail=cover_detail)
+
+    # 3. A real attach target exists but confidence is short -> review queue.
     if result.decision != MatchDecision.CONFIDENT:
         cand_dicts = [
             {
@@ -172,7 +195,7 @@ def sync_book(
         notifier.queued(book.title, result.reason)
         return SyncResult(book.se_url, Outcome.QUEUED, detail=result.reason)
 
-    # 3. Confident match -> add an edition (unless one already exists).
+    # 4. Confident match -> add an edition (unless one already exists).
     book_id = result.best.id
     if existing_book_ids is None:
         try:
