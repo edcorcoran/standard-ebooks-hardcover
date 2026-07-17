@@ -160,6 +160,14 @@ State (the sqlite database and a heartbeat file) is persisted to the `./data`
 volume so restarts resume cleanly. The container runs as a non-root user and
 touches `data/heartbeat` each successful cycle for healthchecks.
 
+The compose file also starts the **review web UI** on port 8000, sharing the
+daemon's state volume — open `http://<server>:8000` from any machine on your
+network. It has no authentication; keep it on a trusted network. Set
+`WEB_BIND_ADDR` in `.env` to control exposure: your server's LAN IP to stay
+LAN-only, or `127.0.0.1` to require an SSH tunnel
+(`ssh -L 8000:localhost:8000 <server>`). Note that Docker published ports
+bypass ufw-style host firewalls — the bind address is the reliable control.
+
 ## Development
 
 ```bash

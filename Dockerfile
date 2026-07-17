@@ -9,7 +9,7 @@ WORKDIR /app
 # Install dependencies first for better layer caching.
 COPY pyproject.toml README.md ./
 COPY src ./src
-RUN pip install --no-cache-dir .
+RUN pip install --no-cache-dir ".[web]"
 
 # Run as a non-root user; the data volume is owned by it.
 RUN useradd --create-home --uid 10001 appuser \

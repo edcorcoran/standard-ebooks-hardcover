@@ -16,3 +16,34 @@ services:
       - ./data:/app/data
     # Default command (watch) comes from the image; override for one-off runs:
     #   docker compose run --rm se-hardcover backfill --dry-run
+
+  # Review web UI, sharing the daemon's state volume. Reachable on your LAN at
+  # http://<server>:8000 — it has NO authentication, so only expose it on a
+  # network you trust (or restrict with `ports: "127.0.0.1:8000:8000"` + an SSH
+  # tunnel).
+  web:
+    build: .
+    image: se-hardcover:latest
+    pull_policy: build
+    container_name: se-hardcover-web
+    restart: unless-stopped
+    command: ["web", "--host", "0.0.0.0"]
+    env_file: .env
+    environment:
+      STATE_DB_PATH: /app/data/se_hardcover.sqlite3
+    ports:
+      # Bind address for the UI. Default listens on all interfaces; set
+      # WEB_BIND_ADDR in .env to pin it (e.g. your server's LAN IP to keep it
+      # LAN-only even if the host gains other interfaces, or 127.0.0.1 for
+      # SSH-tunnel-only). Docker published ports bypass ufw — the bind address
+      # is the reliable control.
+      - "${WEB_BIND_ADDR:-0.0.0.0}:8000:8000"
+    volumes:
+      - ./data:/app/data
+    # The image's default healthcheck watches the daemon heartbeat; probe the
+    # HTTP endpoint instead.
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/')"]
+      interval: 1m
+      timeout: 10s
+      start_period: 30s
