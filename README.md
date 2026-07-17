@@ -117,6 +117,8 @@ the Standard Ebooks catalog. Each reconcile pass:
    problems (wrong format, wrong release date, wrong or missing cover, stray
    ISBN/ASIN), with a verify-and-retry on each write. The SE cover is
    authoritative, so a cover that differs from it is reset to the SE cover.
+   Cover comparison hashes are cached by URL (both sides use content-addressed
+   image URLs), so after the first pass repeat audits download almost nothing.
 3. **Flags what needs a human** — an edition that matches no SE book (a possible
    mis-attribution) — via a Discord summary. A healthy catalog produces no message.
 

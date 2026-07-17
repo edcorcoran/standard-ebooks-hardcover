@@ -175,6 +175,70 @@ def test_auto_fix_triage(tmp_path):
     assert len(result["mis_attributed"]) == 1
 
 
+def _gradient_png(reverse=False):
+    import io
+
+    from PIL import Image
+
+    img = Image.new("L", (16, 16))
+    img.putdata([(15 - x if reverse else x) * 16 for _ in range(16) for x in range(16)])
+    buf = io.BytesIO()
+    img.save(buf, format="PNG")
+    return buf.getvalue()
+
+
+class _CountingHttp:
+    """Fake httpx client that serves PNGs and counts downloads per URL."""
+
+    def __init__(self, images):
+        self.images = images
+        self.calls = []
+
+    def get(self, url):
+        self.calls.append(url)
+
+        class Resp:
+            def __init__(self, content):
+                self.content = content
+
+            def raise_for_status(self):
+                pass
+
+        return Resp(self.images[url])
+
+
+def test_cover_hash_cache_roundtrip(tmp_path):
+    with Store(tmp_path / "s.sqlite3") as store:
+        assert store.cover_hash("https://x/a.jpg") == (False, None)
+        store.set_cover_hash("https://x/a.jpg", 0xDEADBEEF)
+        assert store.cover_hash("https://x/a.jpg") == (True, 0xDEADBEEF)
+        # Undecodable images cache as None (hit, but no hash).
+        store.set_cover_hash("https://x/bad.jpg", None)
+        assert store.cover_hash("https://x/bad.jpg") == (True, None)
+        # 64-bit hashes survive the hex round-trip (would overflow INTEGER).
+        store.set_cover_hash("https://x/big.jpg", 2**64 - 1)
+        assert store.cover_hash("https://x/big.jpg") == (True, 2**64 - 1)
+
+
+def test_cover_compare_downloads_once_then_uses_cache(tmp_path):
+    from se_hardcover.audit import _compare_covers
+
+    hc, se = "https://hc/img.jpg", "https://se/cover.jpg"
+    http = _CountingHttp({hc: _gradient_png(), se: _gradient_png(reverse=True)})
+    with Store(tmp_path / "s.sqlite3") as store:
+        # First compare downloads both images and detects the mismatch.
+        assert _compare_covers(http, hc, se, store) == "mismatch"
+        assert len(http.calls) == 2
+        # Second compare answers entirely from the cache — zero downloads.
+        assert _compare_covers(http, hc, se, store) == "mismatch"
+        assert len(http.calls) == 2
+        # A changed (content-addressed) URL fetches only the new image.
+        hc2 = "https://hc/img2.jpg"
+        http.images[hc2] = _gradient_png(reverse=True)
+        assert _compare_covers(http, hc2, se, store) == "match"
+        assert http.calls.count(hc2) == 1 and len(http.calls) == 3
+
+
 def test_write_report_has_approve_column(tmp_path):
     with Store(tmp_path / "s.sqlite3") as store:
         index = _index(store, tmp_path)

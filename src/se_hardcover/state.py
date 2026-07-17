@@ -49,6 +49,12 @@ CREATE TABLE IF NOT EXISTS review_queue (
     created_at    TEXT DEFAULT (datetime('now')),
     resolved      INTEGER NOT NULL DEFAULT 0
 );
+
+CREATE TABLE IF NOT EXISTS cover_hashes (
+    url           TEXT PRIMARY KEY,             -- content-addressed image URL
+    dhash         TEXT,                          -- hex dhash; NULL = undecodable image
+    fetched_at    TEXT DEFAULT (datetime('now'))
+);
 """
 
 
@@ -203,6 +209,35 @@ class Store:
         with self._tx() as c:
             c.execute(
                 "UPDATE review_queue SET resolved = 1 WHERE se_url = ?", (se_url,)
+            )
+
+    # -- cover-hash cache ----------------------------------------------------
+
+    def cover_hash(self, url: str) -> tuple[bool, int | None]:
+        """Cached perceptual hash for an image URL.
+
+        Returns ``(hit, dhash)``: ``(False, None)`` when the URL has never been
+        hashed, ``(True, None)`` when it was fetched but not decodable as an
+        image, ``(True, value)`` otherwise. Cover URLs on both sides are
+        content-addressed (SE embeds a content hash, Hardcover re-uploads get a
+        new asset path), so a cached URL never needs re-downloading.
+        """
+        row = self._conn.execute(
+            "SELECT dhash FROM cover_hashes WHERE url = ?", (url,)
+        ).fetchone()
+        if row is None:
+            return False, None
+        return True, int(row["dhash"], 16) if row["dhash"] is not None else None
+
+    def set_cover_hash(self, url: str, dhash: int | None) -> None:
+        with self._tx() as c:
+            c.execute(
+                """
+                INSERT INTO cover_hashes (url, dhash) VALUES (?, ?)
+                ON CONFLICT(url) DO UPDATE SET
+                    dhash=excluded.dhash, fetched_at=datetime('now')
+                """,
+                (url, format(dhash, "x") if dhash is not None else None),
             )
 
 
