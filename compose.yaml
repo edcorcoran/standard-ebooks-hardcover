@@ -2,6 +2,9 @@ services:
   se-hardcover:
     build: .
     image: se-hardcover:latest
+    # Always build from this repo; never try to pull from a registry (the image
+    # is not published anywhere).
+    pull_policy: build
     container_name: se-hardcover
     restart: unless-stopped
     env_file: .env
