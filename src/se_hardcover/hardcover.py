@@ -367,6 +367,18 @@ class HardcoverClient:
             for b in data.get("books", [])
         }
 
+    def book_slug(self, book_id: int) -> str | None:
+        """Return a book's slug — the segment Hardcover's /books/ URL resolves.
+
+        Freshly created books are only reachable by slug; the numeric id 404s.
+        """
+        data = self.execute(
+            "query ($id: Int!) { books(where: {id: {_eq: $id}}) { slug } }",
+            {"id": book_id},
+        )
+        books = data.get("books") or []
+        return books[0].get("slug") if books else None
+
     def se_edition_book_ids(self, publisher_id: int) -> set[int]:
         """book_ids that already have an edition under this publisher."""
         data = self.execute(

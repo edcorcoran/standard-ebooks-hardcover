@@ -55,6 +55,10 @@ class FakeClient:
         self._edition_state[eid] = dict(dto)
         return {"id": eid, "edition": {"id": eid, "book_id": 7000 + eid}}
 
+    def book_slug(self, book_id):
+        # A freshly created book gets a slug; the numeric id would 404.
+        return f"new-book-{book_id}"
+
 
 def _se(title="The Brothers Karamazov", author="Fyodor Dostoevsky"):
     return SeBook(
@@ -174,6 +178,28 @@ def test_no_attach_target_creates_new_book(tmp_path):
         assert not store.pending_reviews()  # nothing queued
         # The created edition carries the SE book's authors.
         assert client.edition_contributions(result.edition_id)
+
+
+def test_created_book_notification_links_by_slug(tmp_path):
+    # Regression: the "new book" Discord link must use the slug, not the numeric
+    # book_id — Hardcover's /books/ route 404s on a numeric id.
+    cands = [HardcoverBookMatch(id=1, title="A Completely Different Book",
+                                slug="x", author_names=["Someone Else"])]
+    client = FakeClient(cands)
+
+    sent: list[str] = []
+
+    class CapturingNotifier(Notifier):
+        def added(self, title, url):
+            sent.append(url)
+
+    with Store(tmp_path / "s.sqlite3") as store:
+        result = sync_book(_se(), client, store, REF, CapturingNotifier())
+        assert result.outcome == Outcome.CREATED
+        assert len(sent) == 1
+        assert sent[0] == f"https://hardcover.app/books/new-book-{result.book_id}"
+        # The bare numeric id (the old, 404-ing form) must not be linked.
+        assert sent[0] != f"https://hardcover.app/books/{result.book_id}"
 
 
 def test_existing_edition_is_skipped(tmp_path):
