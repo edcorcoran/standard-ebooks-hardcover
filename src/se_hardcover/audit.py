@@ -108,7 +108,7 @@ def audit_editions(
     try:
         for ed in editions:
             se = match_edition_to_catalog(ed, index)
-            discrepancies.extend(_check_edition(ed, se, ref, http, check_covers))
+            discrepancies.extend(_check_edition(ed, se, ref, http, check_covers, store=store))
     finally:
         http.close()
     logger.info("Audit found %d discrepancies", len(discrepancies))
@@ -121,6 +121,7 @@ def _check_edition(
     ref: RefData,
     http: httpx.Client,
     check_covers: bool,
+    store: Store | None = None,
 ) -> list[Discrepancy]:
     url = f"https://hardcover.app/books/{ed.book_slug}"
     out: list[Discrepancy] = []
@@ -163,7 +164,7 @@ def _check_edition(
     if not ed.image_url:
         add("cover", "Edition has no cover image", "(none)", se.cover_url, "insert_image")
     elif check_covers and se.cover_url:
-        verdict = _compare_covers(http, ed.image_url, se.cover_url)
+        verdict = _compare_covers(http, ed.image_url, se.cover_url, store)
         if verdict == "mismatch":
             add("cover", "Cover does not match SE cover", ed.image_url, se.cover_url,
                 "insert_image")
@@ -174,11 +175,31 @@ def _check_edition(
 # -- cover comparison (perceptual dhash) ----------------------------------
 
 
-def _compare_covers(http: httpx.Client, hardcover_url: str, se_url: str) -> str:
+def _cached_dhash(http: httpx.Client, url: str, store: Store | None) -> int | None:
+    """Perceptual hash for an image URL, downloading only on cache miss.
+
+    Cover URLs are content-addressed on both sides, so a URL's hash never
+    changes — a hit means zero network traffic. Decode failures are cached as
+    None (same bytes will never decode); network errors propagate uncached so
+    the next audit retries.
+    """
+    if store is not None:
+        hit, value = store.cover_hash(url)
+        if hit:
+            return value
+    value = _dhash(cover_bytes(url, http))
+    if store is not None:
+        store.set_cover_hash(url, value)
+    return value
+
+
+def _compare_covers(
+    http: httpx.Client, hardcover_url: str, se_url: str, store: Store | None = None
+) -> str:
     """Return 'match', 'mismatch', or 'unknown' (on fetch/decoding failure)."""
     try:
-        a = _dhash(http.get(hardcover_url).content)
-        b = _dhash(cover_bytes(se_url, http))
+        a = _cached_dhash(http, hardcover_url, store)
+        b = _cached_dhash(http, se_url, store)
     except Exception as exc:
         logger.debug("Cover compare failed (%s): %s", hardcover_url, exc)
         return "unknown"
