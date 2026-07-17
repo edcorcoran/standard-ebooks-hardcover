@@ -27,7 +27,7 @@ from .config import load_settings
 from .hardcover import HardcoverAuthError, HardcoverClient
 from .notify import Notifier
 from .reconcile import reconcile
-from .review import refresh_queue, resolve_review_item
+from .review import auto_create_orphans, refresh_queue, resolve_review_item
 from .state import Store
 from .sync import Outcome, resolve_ref_data, sync_book
 
@@ -177,11 +177,11 @@ def backfill(
                 continue
             result = sync_book(book, client, store, ref, notifier, force=force,
                                existing_book_ids=existing)
-            if result.book_id and result.outcome == Outcome.ADDED:
+            if result.book_id and result.outcome in (Outcome.ADDED, Outcome.CREATED):
                 existing.add(result.book_id)
             counts[result.outcome.value] = counts.get(result.outcome.value, 0) + 1
             processed += 1
-            if result.outcome in (Outcome.ADDED, Outcome.QUEUED, Outcome.ERROR):
+            if result.outcome in (Outcome.ADDED, Outcome.CREATED, Outcome.QUEUED, Outcome.ERROR):
                 log.info("%s -> %s (%s)", book.title[:50], result.outcome.value, result.detail)
     typer.echo(f"Backfill complete: {counts}")
 
@@ -196,6 +196,14 @@ def review(
     create: bool = typer.Option(False, help="Create a NEW Hardcover book + edition."),
     skip: bool = typer.Option(False, help="Mark this item resolved without acting."),
     refresh: bool = typer.Option(False, help="Re-score all pending items with the current matcher."),
+    auto_create: bool = typer.Option(
+        False, "--auto-create",
+        help="Create new books for every queued item with no real attach target.",
+    ),
+    attach_confident: bool = typer.Option(
+        False, "--attach-confident",
+        help="With --auto-create, also auto-attach items that now match confidently.",
+    ),
 ):
     """List the review queue, or resolve one item by attaching / creating / skipping."""
     settings = load_settings()
@@ -204,6 +212,16 @@ def review(
             client = HardcoverClient(settings.require_token())
             summary = refresh_queue(store, client)
             typer.echo(f"Re-scored queue: {summary}")
+            return
+        if auto_create:
+            client = HardcoverClient(settings.require_token())
+            ref = resolve_ref_data(client)
+            summary = auto_create_orphans(store, client, ref, attach_confident=attach_confident)
+            typer.echo(
+                f"Auto-created {summary['created_count']} new book(s); "
+                f"attached {summary['attached_count']} confident match(es); "
+                f"{summary['left']} left for review."
+            )
             return
         if not se_url:
             pending = store.pending_reviews()

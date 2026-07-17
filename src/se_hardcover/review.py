@@ -56,6 +56,70 @@ def refresh_queue(store: Store, client: HardcoverClient) -> dict[str, int]:
     return {"updated": updated, "now_confident": now_confident}
 
 
+def auto_create_orphans(
+    store: Store,
+    client: HardcoverClient,
+    ref: RefData,
+    *,
+    attach_confident: bool = False,
+) -> dict[str, list[str] | int]:
+    """Drain queue items the matcher can now decide on its own.
+
+    Re-searches Hardcover live for every pending review item (so candidate reader
+    counts are fresh) and resolves the ones the matcher is sure about:
+
+    - **CREATE** — no attach target, only junk stubs or different books — always
+      creates a new Hardcover book.
+    - **CONFIDENT** — a strong match to an existing book. Only attached when
+      ``attach_confident`` is set (the librarian opted in); the confidence is
+      re-verified here at write time, so nothing borderline slips through. Skipped
+      if that book already carries an SE edition.
+
+    Everything else (REVIEW, and CONFIDENT when not opted in) is left in the queue
+    for a human. Returns the SE URLs created/attached and how many were left.
+    """
+    from .matching import MatchDecision
+    from .sync import find_match
+
+    existing = client.se_edition_book_ids(ref.publisher_id) if attach_confident else set()
+    created: list[str] = []
+    attached: list[str] = []
+    left = 0
+    for item in list(store.pending_reviews()):
+        book = store.get_book(item["se_url"])
+        if book is None:
+            left += 1
+            continue
+        result = find_match(book, client)
+        try:
+            if result.decision == MatchDecision.CREATE:
+                resolve_review_item(store, client, ref, item["se_url"], "create")
+                created.append(item["se_url"])
+            elif (
+                attach_confident
+                and result.decision == MatchDecision.CONFIDENT
+                and result.best is not None
+                and result.best.id not in existing
+            ):
+                resolve_review_item(
+                    store, client, ref, item["se_url"], "attach", book_id=result.best.id
+                )
+                existing.add(result.best.id)
+                attached.append(item["se_url"])
+            else:
+                left += 1
+        except Exception as exc:  # one bad book must not stop the drain
+            logger.warning("auto-resolve failed for %s: %s", item["se_url"], exc)
+            left += 1
+    return {
+        "created": created,
+        "created_count": len(created),
+        "attached": attached,
+        "attached_count": len(attached),
+        "left": left,
+    }
+
+
 @dataclass
 class ReviewResolution:
     se_url: str
@@ -78,6 +142,20 @@ def resolve_review_item(
     book = store.get_book(se_url)
     if book is None:
         raise ValueError(f"{se_url} is not in the catalog.")
+
+    # Idempotency guard: if this item was already added (a prior click, a retry, or
+    # a concurrent run), do NOT create/attach again — that is exactly what spawns
+    # duplicate Hardcover books. Return the recorded result as a no-op.
+    if action in ("attach", "create"):
+        prior = store.processed_row(se_url)
+        if prior and prior.get("status") == "added":
+            store.resolve_review(se_url)
+            return ReviewResolution(
+                se_url, action,
+                book_id=prior.get("hardcover_book_id"),
+                edition_id=prior.get("hardcover_edition_id"),
+                detail="already resolved (no-op)",
+            )
 
     if action == "skip":
         store.mark_processed(se_url, "skipped_existing", detail="review:skip")

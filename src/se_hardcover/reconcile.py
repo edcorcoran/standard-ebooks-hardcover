@@ -41,6 +41,7 @@ def reconcile(
     summary: dict = {
         "catalog_new": 0,
         "coverage_added": 0,
+        "coverage_created": 0,
         "coverage_queued": 0,
         "coverage_errors": 0,
         "pending_review": 0,
@@ -66,6 +67,9 @@ def reconcile(
         if result.outcome == Outcome.ADDED:
             existing.add(result.book_id)
             summary["coverage_added"] += 1
+        elif result.outcome == Outcome.CREATED:
+            existing.add(result.book_id)
+            summary["coverage_created"] += 1
         elif result.outcome == Outcome.QUEUED:
             summary["coverage_queued"] += 1
         elif result.outcome == Outcome.ERROR:
@@ -88,7 +92,7 @@ def _notify(notifier: Notifier, summary: dict, triage: dict) -> None:
     """Send a Discord summary, but only when something noteworthy happened."""
     noteworthy = any(
         summary[k]
-        for k in ("catalog_new", "coverage_added", "coverage_queued",
+        for k in ("catalog_new", "coverage_added", "coverage_created", "coverage_queued",
                   "coverage_errors", "data_fixed", "covers_fixed", "mis_attributed")
     )
     if not noteworthy:
@@ -99,6 +103,8 @@ def _notify(notifier: Notifier, summary: dict, triage: dict) -> None:
         lines.append(f"• {summary['catalog_new']} new SE book(s) discovered")
     if summary["coverage_added"]:
         lines.append(f"• {summary['coverage_added']} edition(s) added for missing books")
+    if summary["coverage_created"]:
+        lines.append(f"• {summary['coverage_created']} new Hardcover book(s) created")
     if summary["coverage_queued"]:
         lines.append(f"• {summary['coverage_queued']} book(s) queued for review")
     if summary["data_fixed"]:

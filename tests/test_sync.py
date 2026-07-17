@@ -147,15 +147,33 @@ def test_title_only_fallback_rescues_bad_combined_search(tmp_path):
     assert result.score >= CONFIDENT_SCORE
 
 
-def test_no_match_goes_to_review_queue(tmp_path):
-    cands = [HardcoverBookMatch(id=1, title="A Completely Different Book",
-                                slug="x", author_names=["Someone Else"])]
+def test_attach_target_but_unsure_goes_to_review_queue(tmp_path):
+    # An exact-title record with real readers but no author on file is a plausible
+    # attach target -> a human should decide, so it lands in the review queue.
+    cands = [HardcoverBookMatch(id=1, title="The Brothers Karamazov",
+                                slug="x", author_names=[], users_count=500)]
     client = FakeClient(cands)
     with Store(tmp_path / "s.sqlite3") as store:
         result = sync_book(_se(), client, store, REF, Notifier())
         assert result.outcome == Outcome.QUEUED
         assert not client.inserted_editions
         assert len(store.pending_reviews()) == 1
+
+
+def test_no_attach_target_creates_new_book(tmp_path):
+    # Only junk / clearly-different candidates -> nothing to attach to or review,
+    # so the pipeline creates a fresh Hardcover book (with authors) directly.
+    cands = [HardcoverBookMatch(id=1, title="A Completely Different Book",
+                                slug="x", author_names=["Someone Else"])]
+    client = FakeClient(cands)
+    with Store(tmp_path / "s.sqlite3") as store:
+        result = sync_book(_se(), client, store, REF, Notifier())
+        assert result.outcome == Outcome.CREATED
+        assert result.book_id is not None
+        assert result.edition_id is not None
+        assert not store.pending_reviews()  # nothing queued
+        # The created edition carries the SE book's authors.
+        assert client.edition_contributions(result.edition_id)
 
 
 def test_existing_edition_is_skipped(tmp_path):

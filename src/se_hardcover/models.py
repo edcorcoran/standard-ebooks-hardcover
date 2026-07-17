@@ -97,9 +97,10 @@ class HardcoverBookMatch:
 
 
 class MatchDecision(StrEnum):
-    CONFIDENT = "confident"  # auto-add edition
-    REVIEW = "review"  # queue for human decision
-    NONE = "none"  # no plausible candidate found
+    CONFIDENT = "confident"  # auto-add edition to the matched book
+    CREATE = "create"  # nothing plausible to attach to -> create a new book
+    REVIEW = "review"  # a real attach target exists but confidence is short -> ask a human
+    NONE = "none"  # (legacy) no plausible candidate found
 
 
 @dataclass

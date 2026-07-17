@@ -154,6 +154,13 @@ class Store:
         ).fetchone()
         return row["status"] if row else None
 
+    def processed_row(self, se_url: str) -> dict[str, Any] | None:
+        """Return the full processed record for a book, or None if never processed."""
+        row = self._conn.execute(
+            "SELECT * FROM processed WHERE se_url = ?", (se_url,)
+        ).fetchone()
+        return dict(row) if row else None
+
     def is_done(self, se_url: str) -> bool:
         """True if this book was successfully added or intentionally skipped."""
         return self.processed_status(se_url) in {"added", "skipped_existing"}

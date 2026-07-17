@@ -52,17 +52,56 @@ def test_wrong_author_not_confident():
     assert result.decision != MatchDecision.CONFIDENT
 
 
-def test_no_candidates_is_none():
+def test_no_candidates_creates_new_book():
+    # Nothing on Hardcover to attach to -> create a fresh book, no review needed.
     se = _se("Obscure Title", ["Nobody"])
     result = match_book(se, [])
-    assert result.decision == MatchDecision.NONE
+    assert result.decision == MatchDecision.CREATE
 
 
-def test_weak_title_is_none_or_review():
+def test_weak_title_creates_new_book():
+    # A candidate that is clearly a different book is not an attach target.
     se = _se("The Brothers Karamazov", ["Fyodor Dostoevsky"])
     cands = [_cand(1, "War and Peace", ["Leo Tolstoy"])]
     result = match_book(se, cands)
-    assert result.decision in (MatchDecision.NONE, MatchDecision.REVIEW)
+    assert result.decision == MatchDecision.CREATE
+
+
+def test_authorless_stub_creates_new_book():
+    # The "Beyond Thirty" case: an exact-title stub with no author and ~0 readers
+    # is junk, not something to attach to. It must not trip a human review.
+    se = _se("Beyond Thirty", ["Edgar Rice Burroughs"])
+    cands = [_cand(1, "Beyond Thirty", [], users=0)]
+    result = match_book(se, cands)
+    assert result.decision == MatchDecision.CREATE
+
+
+def test_established_rival_without_author_is_review():
+    # An exact-title record with a real readership but no author on file is a
+    # plausible attach target -> a human should decide, not auto-create.
+    se = _se("The Republic", ["Plato"])
+    cands = [_cand(1, "The Republic", [], users=500)]
+    result = match_book(se, cands)
+    assert result.decision == MatchDecision.REVIEW
+
+
+def test_colon_subtitle_with_author_is_confident():
+    # SE keeps a clean title; Hardcover carries the subtitle inline. Same base
+    # title + same author -> confident auto-attach, not a review.
+    se = _se("Flatland", ["Edwin A. Abbott"])
+    cands = [_cand(1, "Flatland: A Romance of Many Dimensions", ["Edwin A. Abbott"], users=300)]
+    result = match_book(se, cands)
+    assert result.decision == MatchDecision.CONFIDENT
+    assert result.best.id == 1
+
+
+def test_omnibus_without_colon_is_not_promoted():
+    # "The Monster" vs "The Monster and Other Stories" is a different (omnibus)
+    # work — no colon, so it must NOT be promoted to confident.
+    se = _se("The Monster", ["Edgar Saltus"])
+    cands = [_cand(1, "The Monster and Other Stories", ["Edgar Saltus"], users=300)]
+    result = match_book(se, cands)
+    assert result.decision != MatchDecision.CONFIDENT
 
 
 def test_subtitle_noise_still_scores_high():
