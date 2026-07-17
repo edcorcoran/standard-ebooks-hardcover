@@ -173,8 +173,16 @@ def sync_book(
             book.se_url, "added", book_id=new_book_id, edition_id=edition_id,
             detail=f"created:{cover_detail}",
         )
+        # Hardcover book URLs resolve by slug, not numeric id — linking the id
+        # gives a 404. Look up the slug the new book was assigned.
+        slug = None
+        if new_book_id:
+            try:
+                slug = client.book_slug(new_book_id)
+            except Exception as exc:
+                logger.warning("Could not fetch slug for new book %s: %s", new_book_id, exc)
         notifier.added(f"{book.title} (new book)",
-                       f"https://hardcover.app/books/{new_book_id}")
+                       f"https://hardcover.app/books/{slug or new_book_id}")
         return SyncResult(book.se_url, Outcome.CREATED, book_id=new_book_id,
                           edition_id=edition_id, detail=cover_detail)
 
