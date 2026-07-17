@@ -145,9 +145,14 @@ approved audit rows to Hardcover; individual queue actions write immediately.
 
 ```bash
 cp .env.example .env    # fill in HARDCOVER_API_TOKEN (+ optional DISCORD_WEBHOOK_URL)
+mkdir -p data && sudo chown -R 10001:10001 data   # container writes as uid 10001
 docker compose up -d
 docker compose logs -f
 ```
+
+> The container runs as a non-root user (uid 10001). The bind-mounted `./data`
+> directory must be writable by that uid, or sqlite fails with
+> `attempt to write a readonly database`.
 
 State (the sqlite database and a heartbeat file) is persisted to the `./data`
 volume so restarts resume cleanly. The container runs as a non-root user and
