@@ -36,6 +36,9 @@ app = typer.Typer(add_completion=False, help="Sync Standard Ebooks releases into
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s"
 )
+# httpx logs every request URL at INFO — which would print the Discord webhook
+# URL (a write-credential) into the daemon logs. Warnings only.
+logging.getLogger("httpx").setLevel(logging.WARNING)
 log = logging.getLogger("se_hardcover")
 
 
