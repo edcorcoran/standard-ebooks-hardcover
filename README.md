@@ -28,10 +28,16 @@ book, with the correct metadata and cover. It does three things:
 - **Hardcover is written via its GraphQL API** (`https://api.hardcover.app/v1/graphql`).
   The client throttles to stay under the 60 requests/minute limit and retries on
   429/5xx.
-- **Matching is conservative.** A Standard Ebooks book is only added
-  automatically when it matches an existing Hardcover book with high confidence.
-  Anything uncertain goes to a local **review queue** for you to resolve — the
-  tool never creates a brand-new Hardcover book on its own.
+- **Matching is conservative, in both directions.** Each Standard Ebooks book
+  gets one of three outcomes:
+  - **Confident match** to an existing Hardcover book → the SE edition is added
+    to it automatically.
+  - **No plausible attach target** (no results, or only junk stubs / clearly
+    different works) → a **new Hardcover book is created** automatically, with
+    the SE authors, cover, and metadata.
+  - **A real candidate exists but confidence falls short** → the book goes to a
+    local **review queue** for a human decision. Only items genuinely worth a
+    librarian's judgment land here.
 
 ## Install
 
@@ -56,6 +62,9 @@ Copy `.env.example` to `.env` and fill in:
 | `DISCORD_WEBHOOK_URL` | no | Discord webhook for notifications. Disabled if empty. |
 | `STATE_DB_PATH` | no | sqlite state file (default `data/se_hardcover.sqlite3`). |
 | `POLL_INTERVAL` | no | Daemon poll interval in seconds (default `3600`). |
+| `AUDIT_INTERVAL` | no | Reconcile-audit cadence in seconds (`0` = every poll cycle). |
+| `AUDIT_CHECK_COVERS` | no | If `true` (default), the audit also compares cover images. |
+| `HEARTBEAT_PATH` | no | File touched each successful daemon cycle (Docker healthcheck). |
 | `DRY_RUN` | no | If `true`, never send mutations to Hardcover. |
 
 The `catalog` command needs no token.
@@ -66,7 +75,7 @@ The `catalog` command needs no token.
 # Phase 0 — verify API access and resolve reference ids (read-only)
 se-hardcover probe
 
-# Phase 1 — build the local Standard Ebooks catalog cache (~1,180 books)
+# Phase 1 — build the local Standard Ebooks catalog cache (~1,480 books)
 se-hardcover catalog
 
 # Phase 2 — audit existing editions -> CSV, review, then apply approved rows
@@ -84,6 +93,9 @@ se-hardcover review                                   # list the queue
 se-hardcover review <se_url> --attach <hardcover_book_id>
 se-hardcover review <se_url> --create                 # make a new Hardcover book
 se-hardcover review <se_url> --skip
+se-hardcover review --refresh                         # re-score the queue with the current matcher
+se-hardcover review --auto-create                     # bulk-resolve items with no attach target
+se-hardcover review --auto-create --attach-confident  # ...and attach confident matches too
 
 # Phase 4 — run the daemon (one cycle, for testing)
 se-hardcover watch --once
@@ -98,8 +110,9 @@ Beyond adding new releases, the daemon periodically **reconciles** Hardcover wit
 the Standard Ebooks catalog. Each reconcile pass:
 
 1. Refreshes the catalog and **adds an edition for any SE book that doesn't have
-   one** (confident matches automatically, the rest queued) — so every Standard
-   Ebook ends up with a Hardcover edition.
+   one** (confident matches attach automatically, books with no plausible match
+   are created, the rest queued) — so every Standard Ebook ends up with a
+   Hardcover edition.
 2. **Audits every edition under the publisher** and auto-corrects the mechanical
    problems (wrong format, wrong release date, wrong or missing cover, stray
    ISBN/ASIN), with a verify-and-retry on each write. The SE cover is
@@ -115,7 +128,9 @@ same cadence as the new-release check), and you can run it on demand with
 
 Prefer clicking to typing? A lightweight local web app lets you work the review
 queue and the audit report visually — see each book's cover next to its
-candidate matches, attach/create/skip with a button, and tick off audit fixes.
+candidate matches, attach/create/skip with a button, bulk-create everything
+with no real match, and tick off audit fixes. SE compilation titles (Short
+Fiction, Poetry, …) are badged and sorted to the top.
 
 ```bash
 pip install '.[web]'
@@ -154,7 +169,7 @@ feed sample, and a listing-page sample) — no network or API token needed.
 - The Hardcover API is in beta; its schema can change. The `probe` command exists
   to confirm reference ids and edition/image behavior before any bulk write.
 - Standard Ebooks releases are English-language, public-domain ebooks with no
-  ISBN/ASIN; the audit flags any edition that has one set.
+  ISBN/ASIN; the audit clears any stray ISBN/ASIN automatically.
 - Be a good API citizen: the tool sends a descriptive user-agent and throttles
   both Standard Ebooks and Hardcover requests.
 
