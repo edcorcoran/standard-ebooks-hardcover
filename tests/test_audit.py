@@ -194,6 +194,83 @@ def test_auto_fix_triage(tmp_path):
     assert len(result["mis_attributed"]) == 1
 
 
+def _short_fiction_store(store):
+    store.upsert_book(SeBook(
+        se_url="https://standardebooks.org/ebooks/akutagawa-ryunosuke/short-fiction",
+        repo="akutagawa-ryunosuke_short-fiction", title="Short Fiction",
+        contributors=[Contributor(name="Akutagawa Ryūnosuke", role="aut")],
+        release_date="2026-03-19", cover_url="https://se/cover.jpg",
+    ))
+    return "https://standardebooks.org/ebooks/akutagawa-ryunosuke/short-fiction"
+
+
+def _sf_edition(id, book_id, slug, author="Akutagawa Ryūnosuke", **over):
+    return _edition(id=id, book_id=book_id, book_slug=slug, title="Short Fiction",
+                    book_title="Short Fiction", contributions=[],
+                    book_author_names=[author], release_date="2026-03-19", **over)
+
+
+def test_find_duplicates_prefers_recorded_edition(tmp_path):
+    from se_hardcover.audit import find_duplicates
+
+    with Store(tmp_path / "s.sqlite3") as store:
+        se_url = _short_fiction_store(store)
+        index = build_catalog_index(store)
+        ours = _sf_edition(500, 50, "short-fiction-2026")
+        theirs = _sf_edition(900, 90, "short-fiction-x", author="Ryūnosuke Akutagawa")
+        older = _sf_edition(100, 50, "short-fiction-2026")
+        matched = [(e, match_edition_to_catalog(e, index)) for e in (theirs, ours, older)]
+
+        # Nothing recorded: the oldest edition is kept.
+        canonical, dups = find_duplicates(matched, store)[se_url]
+        assert canonical.id == 100 and {d.id for d in dups} == {500, 900}
+
+        # Our recorded edition wins over an older one.
+        store.mark_processed(se_url, "added", book_id=50, edition_id=500)
+        canonical, dups = find_duplicates(matched, store)[se_url]
+        assert canonical.id == 500 and {d.id for d in dups} == {100, 900}
+
+
+def test_audit_reports_duplicate_without_field_checks(tmp_path):
+    from se_hardcover.audit import audit_editions
+
+    class _Client:
+        def editions_for_publisher(self, publisher_id):
+            return [ours, theirs]
+
+    with Store(tmp_path / "s.sqlite3") as store:
+        se_url = _short_fiction_store(store)
+        store.mark_processed(se_url, "added", book_id=50, edition_id=500)
+        ours = _sf_edition(500, 50, "short-fiction-2026")
+        # The duplicate also has a wrong format and no cover — neither is reported.
+        theirs = _sf_edition(900, 90, "short-fiction-x", author="Ryūnosuke Akutagawa",
+                             reading_format_id=1, image_url=None)
+        d = audit_editions(_Client(), store, REF, check_covers=False)
+        assert len(d) == 1
+        assert d[0].edition_id == 900 and d[0].field == "duplicate"
+        assert d[0].fix_kind == "manual"
+        assert d[0].problem == "Duplicate SE edition on a different book"
+        assert "short-fiction-2026" in d[0].proposed
+
+
+def test_auto_fix_never_writes_to_duplicate():
+    from se_hardcover.audit import auto_fix_discrepancies
+    from se_hardcover.models import Discrepancy
+    from tests.test_sync import FakeClient
+
+    client = FakeClient([])
+    discs = [
+        Discrepancy(7, "u", "s", "duplicate", "dup", "edition 7", "merge into x", "manual"),
+        Discrepancy(7, "u", "s", "reading_format", "not ebook", "Read", "4", "update_edition"),
+        Discrepancy(7, "u", "s", "cover", "no cover", "(none)", "https://se/c.jpg",
+                    "insert_image"),
+    ]
+    result = auto_fix_discrepancies(client, discs)
+    assert len(result["duplicates"]) == 1
+    assert result["fixed"] == 0
+    assert client.updated == [] and client.inserted_images == []
+
+
 def _gradient_png(reverse=False):
     import io
 

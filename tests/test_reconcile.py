@@ -82,3 +82,49 @@ def test_reconcile_flags_mis_attributed_edition(tmp_path):
                             check_covers=False, refresh_catalog=False)
         assert summary["mis_attributed"] == 1
         assert summary["data_fixed"] == 0
+
+
+class _RecordingNotifier(Notifier):
+    def __init__(self):
+        super().__init__("")
+        self.messages = []
+
+    def send(self, message):
+        self.messages.append(message)
+
+
+def test_reconcile_reports_new_duplicates_once(tmp_path):
+    with Store(tmp_path / "s.sqlite3") as store:
+        se_url = "https://standardebooks.org/ebooks/b/beta"
+        store.upsert_book(SeBook(
+            se_url=se_url, repo="b_beta", title="Beta",
+            contributors=[Contributor(name="Author B", role="aut")],
+            release_date="2021-02-02", cover_url="https://se/b.jpg"))
+        store.mark_processed(se_url, "added", book_id=200, edition_id=500)
+
+        def edition(id, book_id, slug, fmt):
+            return HardcoverEdition(
+                id=id, book_id=book_id, book_title="Beta", book_slug=slug,
+                book_author_names=["Author B"], title="Beta", release_date="2021-02-02",
+                reading_format_id=fmt, language_id=1, image_url="https://hc/b.jpg",
+                contributions=[])
+
+        # Another user's copy of the same SE book, on its own book, wrongly formatted.
+        editions = [edition(500, 200, "beta", 4), edition(900, 300, "beta-dup", 1)]
+        client = ReconcileFake({}, existing_book_ids={200, 300}, editions=editions)
+        notifier = _RecordingNotifier()
+
+        summary = reconcile(client, store, REF, notifier,
+                            check_covers=False, refresh_catalog=False)
+        assert summary["duplicates"] == 1 and summary["duplicates_new"] == 1
+        assert summary["data_fixed"] == 0  # the duplicate is never touched
+        assert client.updated == []
+        assert len(notifier.messages) == 1
+        assert "https://hardcover.app/books/beta-dup" in notifier.messages[0]
+        assert "merge into https://hardcover.app/books/beta " in notifier.messages[0]
+
+        # Next cycle: still a duplicate, but already reported — stay quiet.
+        summary = reconcile(client, store, REF, notifier,
+                            check_covers=False, refresh_catalog=False)
+        assert summary["duplicates"] == 1 and summary["duplicates_new"] == 0
+        assert len(notifier.messages) == 1

@@ -102,20 +102,95 @@ def audit_editions(
     *,
     check_covers: bool = True,
 ) -> list[Discrepancy]:
-    """Fetch publisher editions and produce a list of discrepancies."""
-    editions = client.editions_for_publisher(ref.publisher_id)
-    logger.info("Fetched %d editions for publisher %d", len(editions), ref.publisher_id)
-    index = build_catalog_index(store)
+    """Fetch publisher editions and produce a list of discrepancies.
+
+    A duplicate edition (a second edition of an SE book that already has one) is
+    reported only as a ``duplicate`` and gets no field checks: it should be
+    merged away by a human, not polished — and correcting its data would only
+    make the duplicate look more legitimate.
+    """
+    matched = match_editions(client, store, ref)
+    dup_by_edition = {
+        dup.id: (dup, canonical)
+        for canonical, dups in find_duplicates(matched, store).values()
+        for dup in dups
+    }
     http = httpx.Client(timeout=30.0, follow_redirects=True)
     discrepancies: list[Discrepancy] = []
     try:
-        for ed in editions:
-            se = match_edition_to_catalog(ed, index)
+        for ed, se in matched:
+            if ed.id in dup_by_edition:
+                discrepancies.append(_duplicate_discrepancy(*dup_by_edition[ed.id], se))
+                continue
             discrepancies.extend(_check_edition(ed, se, ref, http, check_covers, store=store))
     finally:
         http.close()
     logger.info("Audit found %d discrepancies", len(discrepancies))
     return discrepancies
+
+
+def match_editions(
+    client: HardcoverClient, store: Store, ref: RefData
+) -> list[tuple[HardcoverEdition, SeBook | None]]:
+    """Fetch every edition under the SE publisher and pair it with its catalog book."""
+    editions = client.editions_for_publisher(ref.publisher_id)
+    logger.info("Fetched %d editions for publisher %d", len(editions), ref.publisher_id)
+    index = build_catalog_index(store)
+    return [(ed, match_edition_to_catalog(ed, index)) for ed in editions]
+
+
+def find_duplicates(
+    matched: list[tuple[HardcoverEdition, SeBook | None]], store: Store
+) -> dict[str, tuple[HardcoverEdition, list[HardcoverEdition]]]:
+    """Group SE books that more than one Hardcover edition claims to be.
+
+    Returns ``{se_url: (canonical, [duplicates])}``. The canonical edition is
+    the one our state DB recorded for that book (we created or verified it),
+    else an edition on the book we recorded, else the oldest (lowest id), which
+    is the one most likely to carry readers. Duplicates arise when another
+    Hardcover user adds an SE edition we already have, or when one book carries
+    several SE editions; there is no merge/delete API, so they can only be
+    reported for a human to merge in the Hardcover UI.
+    """
+    by_se: dict[str, list[HardcoverEdition]] = {}
+    for ed, se in matched:
+        if se is not None:
+            by_se.setdefault(se.se_url, []).append(ed)
+
+    groups: dict[str, tuple[HardcoverEdition, list[HardcoverEdition]]] = {}
+    for se_url, eds in by_se.items():
+        if len(eds) < 2:
+            continue
+        row = store.processed_row(se_url) or {}
+        eds = sorted(eds, key=lambda e: e.id)
+        canonical = (
+            next((e for e in eds if e.id == row.get("hardcover_edition_id")), None)
+            or next((e for e in eds if e.book_id == row.get("hardcover_book_id")), None)
+            or eds[0]
+        )
+        groups[se_url] = (canonical, [e for e in eds if e is not canonical])
+    return groups
+
+
+def _duplicate_discrepancy(
+    dup: HardcoverEdition, canonical: HardcoverEdition, se: SeBook | None
+) -> Discrepancy:
+    same_book = dup.book_id == canonical.book_id
+    problem = (
+        "Duplicate SE edition on the same book" if same_book
+        else "Duplicate SE edition on a different book"
+    )
+    return Discrepancy(
+        dup.id,
+        f"https://hardcover.app/books/{dup.book_slug}",
+        se.se_url if se else None,
+        "duplicate",
+        problem,
+        f"edition {dup.id} on book {dup.book_id}",
+        f"merge into https://hardcover.app/books/{canonical.book_slug} "
+        f"(edition {canonical.id})",
+        "manual",
+    )
 
 
 def _check_edition(
@@ -263,15 +338,22 @@ def auto_fix_discrepancies(
     with verify+retry: format, date, language, ISBN/ASIN, and the cover — whether
     it's missing or differs from the SE cover, since for a Standard Ebooks
     edition the SE cover is authoritative and re-applying it is self-resolving.
-    Only an edition that matches no SE catalog book (a possible mis-attribution)
-    is returned for a human, never auto-changed.
+    An edition that matches no SE catalog book (a possible mis-attribution) or
+    duplicates another edition of the same SE book is returned for a human,
+    never auto-changed.
     """
     per_edition: dict[int, list[Discrepancy]] = {}
     for d in discrepancies:
         per_edition.setdefault(d.edition_id, []).append(d)
 
-    result = {"fixed": 0, "errors": 0, "covers_fixed": 0, "mis_attributed": []}
+    result = {"fixed": 0, "errors": 0, "covers_fixed": 0, "mis_attributed": [],
+              "duplicates": []}
     for edition_id, discs in per_edition.items():
+        duplicate = next((d for d in discs if d.field == "duplicate"), None)
+        if duplicate is not None:
+            # Never write to a duplicate — it awaits a human merge.
+            result["duplicates"].append(duplicate)
+            continue
         dto: dict = {}
         for d in discs:
             if d.field == "book_match":
@@ -344,7 +426,7 @@ def apply_fixes(client: HardcoverClient, csv_path: Path) -> dict[str, int]:
             elif field == "asin":
                 dto["asin"] = ""
                 summary["cleared"] += 1
-            else:  # book_match — needs a human, no safe automatic action
+            else:  # book_match / duplicate — needs a human, no safe automatic action
                 summary["skipped_manual"] += 1
         try:
             # Fold the cover link into the single verified update, so the whole

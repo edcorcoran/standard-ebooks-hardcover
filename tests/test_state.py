@@ -57,3 +57,13 @@ def test_review_queue(tmp_path):
         assert pending[0]["candidates"][0]["title"] == "X"
         store.resolve_review(url)
         assert store.pending_reviews() == []
+
+
+def test_known_duplicates_reports_each_once(tmp_path):
+    with Store(tmp_path / "s.sqlite3") as store:
+        assert store.sync_known_duplicates({1: "a", 2: "b"}) == {1, 2}
+        assert store.sync_known_duplicates({1: "a", 2: "b"}) == set()
+        # 2 was merged away and forgotten; 3 is new.
+        assert store.sync_known_duplicates({1: "a", 3: "c"}) == {3}
+        # If 2 ever reappears it is reported again.
+        assert store.sync_known_duplicates({1: "a", 2: "b", 3: "c"}) == {2}

@@ -50,6 +50,14 @@ CREATE TABLE IF NOT EXISTS review_queue (
     resolved      INTEGER NOT NULL DEFAULT 0
 );
 
+-- Duplicate SE editions the reconcile has already reported, so each one is
+-- announced once rather than every cycle until a human merges it.
+CREATE TABLE IF NOT EXISTS known_duplicates (
+    edition_id    INTEGER PRIMARY KEY,
+    se_url        TEXT,
+    first_seen    TEXT DEFAULT (datetime('now'))
+);
+
 CREATE TABLE IF NOT EXISTS cover_hashes (
     url           TEXT PRIMARY KEY,             -- content-addressed image URL
     dhash         TEXT,                          -- hex dhash; NULL = undecodable image
@@ -210,6 +218,30 @@ class Store:
             c.execute(
                 "UPDATE review_queue SET resolved = 1 WHERE se_url = ?", (se_url,)
             )
+
+    # -- known duplicates ----------------------------------------------------
+
+    def sync_known_duplicates(self, current: dict[int, str | None]) -> set[int]:
+        """Record this pass's duplicate editions (``{edition_id: se_url}``).
+
+        Returns the ids not seen before. Ids no longer duplicated (merged in the
+        Hardcover UI) are forgotten, so if one ever reappears it is reported again.
+        """
+        known = {
+            r["edition_id"]
+            for r in self._conn.execute("SELECT edition_id FROM known_duplicates")
+        }
+        new = set(current) - known
+        with self._tx() as c:
+            gone = known - set(current)
+            c.executemany(
+                "DELETE FROM known_duplicates WHERE edition_id = ?", [(i,) for i in gone]
+            )
+            c.executemany(
+                "INSERT INTO known_duplicates (edition_id, se_url) VALUES (?, ?)",
+                [(i, current[i]) for i in new],
+            )
+        return new
 
     # -- cover-hash cache ----------------------------------------------------
 

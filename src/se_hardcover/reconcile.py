@@ -8,7 +8,8 @@ The automated audit the daemon runs on a cadence. It answers two questions:
 2. **Is the data on the existing SE editions accurate, and do they all
    correspond to real SE books?** (integrity) — it audits every edition under the
    publisher, auto-fixes the mechanical problems, and flags anything needing a
-   human (a swapped cover, or an edition that matches no SE book).
+   human (an edition that matches no SE book, or a duplicate edition of an SE
+   book that already has one).
 
 A Discord summary is sent only when something actually happened, so a healthy
 catalog stays quiet.
@@ -48,6 +49,8 @@ def reconcile(
         "data_fixed": 0,
         "covers_fixed": 0,
         "mis_attributed": 0,
+        "duplicates": 0,
+        "duplicates_new": 0,
     }
 
     # 1. Discover any newly published SE books (belt-and-suspenders with the feed).
@@ -82,18 +85,24 @@ def reconcile(
     summary["data_fixed"] = triage["fixed"]
     summary["covers_fixed"] = triage["covers_fixed"]
     summary["mis_attributed"] = len(triage["mis_attributed"])
+    # Duplicates persist until a human merges them, so only announce new ones.
+    new_ids = store.sync_known_duplicates({d.edition_id: d.se_url for d in triage["duplicates"]})
+    new_duplicates = [d for d in triage["duplicates"] if d.edition_id in new_ids]
+    summary["duplicates"] = len(triage["duplicates"])
+    summary["duplicates_new"] = len(new_duplicates)
 
-    _notify(notifier, summary, triage)
+    _notify(notifier, summary, triage, new_duplicates)
     logger.info("Reconcile complete: %s", summary)
     return summary
 
 
-def _notify(notifier: Notifier, summary: dict, triage: dict) -> None:
+def _notify(notifier: Notifier, summary: dict, triage: dict, new_duplicates: list) -> None:
     """Send a Discord summary, but only when something noteworthy happened."""
     noteworthy = any(
         summary[k]
         for k in ("catalog_new", "coverage_added", "coverage_created", "coverage_queued",
-                  "coverage_errors", "data_fixed", "covers_fixed", "mis_attributed")
+                  "coverage_errors", "data_fixed", "covers_fixed", "mis_attributed",
+                  "duplicates_new")
     )
     if not noteworthy:
         return
@@ -120,4 +129,11 @@ def _notify(notifier: Notifier, summary: dict, triage: dict) -> None:
         )
         for d in triage["mis_attributed"][:10]:
             lines.append(f"    {d.hardcover_url} ({d.current})")
+    if new_duplicates:
+        lines.append(
+            f"• ⚠️ {len(new_duplicates)} new duplicate SE edition(s) "
+            f"({summary['duplicates']} in total) — merge in Hardcover:"
+        )
+        for d in new_duplicates[:10]:
+            lines.append(f"    {d.hardcover_url} ({d.current}) → {d.proposed}")
     notifier.send("\n".join(lines))

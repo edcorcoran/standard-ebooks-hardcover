@@ -5,6 +5,7 @@ Subcommands:
   catalog      build/refresh the local Standard Ebooks catalog cache
   audit        report discrepancies on existing Hardcover editions (writes CSV)
   apply-fixes  execute approved rows from an audit CSV
+  duplicates   list SE books with more than one Hardcover edition (read-only)
   backfill     add editions for catalog books not yet on Hardcover
   review       list / resolve the review queue
   watch        daemon: poll the Atom feed and sync new releases
@@ -21,7 +22,7 @@ import typer
 
 from . import standard_ebooks as se
 from .audit import apply_fixes as apply_fixes_impl
-from .audit import audit_editions, summarize, write_report
+from .audit import audit_editions, find_duplicates, match_editions, summarize, write_report
 from .catalog import build_catalog
 from .config import load_settings
 from .hardcover import HardcoverAuthError, HardcoverClient
@@ -137,6 +138,31 @@ def audit(
         typer.echo(summarize(discrepancies))
         typer.echo(f"\nReport written to {out}. Review it, set the `approve` column, "
                    f"then run `se-hardcover apply-fixes {out}`.")
+
+
+@app.command()
+def duplicates():
+    """List SE books with more than one Hardcover edition, for merging in the UI.
+
+    Read-only: the API has no merge or delete, so this only tells a librarian
+    which books/editions to merge by hand.
+    """
+    client = _client(dry_run=True)
+    with _store() as store:
+        if store.catalog_count() == 0:
+            raise typer.Exit("Catalog is empty. Run `se-hardcover catalog` first.")
+        ref = resolve_ref_data(client)
+        groups = find_duplicates(match_editions(client, store, ref), store)
+        for se_url, (canonical, dups) in sorted(groups.items()):
+            typer.echo(f"\n{se_url}")
+            typer.echo(f"  keep   https://hardcover.app/books/{canonical.book_slug} "
+                       f"(edition {canonical.id})")
+            for d in dups:
+                where = "same book" if d.book_id == canonical.book_id else "other book"
+                typer.echo(f"  merge  https://hardcover.app/books/{d.book_slug} "
+                           f"(edition {d.id}, {where})")
+        n = sum(len(d) for _, d in groups.values())
+        typer.echo(f"\n{len(groups)} SE book(s) with duplicates; {n} edition(s) to merge.")
 
 
 @app.command(name="apply-fixes")
