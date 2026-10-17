@@ -149,6 +149,25 @@ def test_match_uses_book_authors_when_edition_has_none(tmp_path):
         assert match_edition_to_catalog(ed, index) is not None
 
 
+def test_match_tolerates_reversed_name_order(tmp_path):
+    # "Short Fiction" is shared by many SE books, so the title-only fallback is
+    # dropped and the author must match — even when Hardcover reverses the
+    # family-name-first order SE uses.
+    with Store(tmp_path / "s.sqlite3") as store:
+        for slug, author in [("akutagawa-ryunosuke", "Akutagawa Ryūnosuke"),
+                             ("o-henry", "O. Henry")]:
+            store.upsert_book(SeBook(
+                se_url=f"https://standardebooks.org/ebooks/{slug}/short-fiction",
+                repo=f"{slug}_short-fiction", title="Short Fiction",
+                contributors=[Contributor(name=author, role="aut")],
+            ))
+        index = build_catalog_index(store)
+        ed = _edition(title="Short Fiction", book_title="Short Fiction", contributions=[],
+                      book_author_names=["Ryūnosuke Akutagawa"])
+        se = match_edition_to_catalog(ed, index)
+        assert se is not None and "akutagawa" in se.se_url
+
+
 def test_auto_fix_triage(tmp_path):
     from se_hardcover.audit import auto_fix_discrepancies
     from se_hardcover.models import Discrepancy

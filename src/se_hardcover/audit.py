@@ -17,7 +17,7 @@ from pathlib import Path
 import httpx
 
 from .hardcover import HardcoverClient
-from .matching import normalize_title, surname
+from .matching import name_key, normalize_title, surname
 from .models import Discrepancy, HardcoverEdition, SeBook
 from .standard_ebooks import cover_bytes
 from .state import Store
@@ -34,8 +34,10 @@ CSV_FIELDS = [
 def build_catalog_index(store: Store) -> dict:
     """Index catalog books for matching against existing Hardcover editions.
 
-    Keyed two ways: by ``(normalized title, author surname)`` tuples, and by
-    normalized title alone (string key) as a fallback. Title-only keys that are
+    Keyed three ways: by ``(normalized title, author surname)`` tuples, by
+    ``(normalized title, "name:" + order-insensitive full name)`` tuples (so
+    "Akutagawa Ryūnosuke" matches "Ryūnosuke Akutagawa"), and by normalized
+    title alone (string key) as a fallback. Title-only keys that are
     ambiguous (two catalog books share a normalized title) are dropped, so the
     fallback can never match the wrong book.
     """
@@ -46,6 +48,7 @@ def build_catalog_index(store: Store) -> dict:
         title_counts[nt] = title_counts.get(nt, 0) + 1
         for a in book.authors or []:
             index[(nt, surname(a.name))] = book
+            index[(nt, "name:" + name_key(a.name))] = book
         index.setdefault(nt, book)  # string key = title-only fallback
     for nt, count in title_counts.items():
         if count > 1:
@@ -62,14 +65,14 @@ def match_edition_to_catalog(edition: HardcoverEdition, index: dict) -> SeBook |
     title+author and title-only indexes.
     """
     variants = _title_variants(edition)
-    # Author surnames from the edition's own contributions and, importantly, from
+    # Author names from the edition's own contributions and, importantly, from
     # the book it hangs on — our backfilled editions carry no edition-level
     # contributions, so the book's authors are what let them match.
-    surnames = [surname(c.author_name) for c in edition.contributions]
-    surnames += [surname(name) for name in edition.book_author_names]
+    names = [c.author_name for c in edition.contributions] + list(edition.book_author_names)
+    keys = [surname(n) for n in names] + ["name:" + name_key(n) for n in names]
     for nt in variants:
-        for sn in surnames:
-            book = index.get((nt, sn))
+        for key in keys:
+            book = index.get((nt, key))
             if book is not None:
                 return book
     for nt in variants:

@@ -1,5 +1,6 @@
 from se_hardcover.matching import (
     match_book,
+    name_key,
     normalize_title,
     score_candidate,
     surname,
@@ -34,6 +35,20 @@ def test_surname():
     assert surname("Fyodor Dostoevsky") == "dostoevsky"
     assert surname("W. E. B. Du Bois") == "bois"
     assert surname("") == ""
+
+
+def test_name_key_ignores_word_order_and_accents():
+    assert name_key("Akutagawa Ryūnosuke") == name_key("Ryūnosuke Akutagawa")
+    assert name_key("Akutagawa Ryūnosuke") != name_key("Akutagawa Hiroshi")
+
+
+def test_family_name_first_author_is_confident():
+    # SE writes East Asian names family-name first; Hardcover often doesn't.
+    se = _se("Rashōmon", ["Akutagawa Ryūnosuke"])
+    cands = [_cand(1, "Rashomon", ["Ryūnosuke Akutagawa"])]
+    result = match_book(se, cands)
+    assert result.decision == MatchDecision.CONFIDENT
+    assert result.best.id == 1
 
 
 def test_exact_match_is_confident():

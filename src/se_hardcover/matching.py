@@ -49,6 +49,31 @@ def surname(name: str) -> str:
     return parts[-1] if parts else ""
 
 
+def name_key(name: str) -> str:
+    """Word-order-insensitive key for a full name.
+
+    Standard Ebooks writes East Asian names family-name first ("Akutagawa
+    Ryūnosuke") while Hardcover records often use Western order ("Ryūnosuke
+    Akutagawa"), so their ``surname`` values differ. Comparing the full set of
+    name words still recognises them as the same person without loosening the
+    match: every word must agree, just not in the same order.
+    """
+    cleaned = _strip_accents(name).lower()
+    cleaned = re.sub(r"[^a-z0-9 ]+", " ", cleaned)
+    return " ".join(sorted(cleaned.split()))
+
+
+def shares_author(names_a: list[str], names_b: list[str]) -> bool:
+    """True when two author lists share a surname or a whole (reordered) name."""
+    surnames_a = {surname(n) for n in names_a} - {""}
+    surnames_b = {surname(n) for n in names_b} - {""}
+    if surnames_a & surnames_b:
+        return True
+    keys_a = {name_key(n) for n in names_a} - {""}
+    keys_b = {name_key(n) for n in names_b} - {""}
+    return bool(keys_a & keys_b)
+
+
 def _strip_accents(text: str) -> str:
     return "".join(
         c for c in unicodedata.normalize("NFKD", text) if not unicodedata.combining(c)
@@ -94,19 +119,17 @@ def _title_score(se_title: str, cand_title: str) -> float:
 
 
 def _author_matches(se: SeBook, cand: HardcoverBookMatch) -> bool:
-    """True when the SE book and candidate share an author surname."""
-    se_surnames = {surname(a.name) for a in se.authors if surname(a.name)}
-    cand_surnames = {surname(a) for a in cand.author_names if surname(a)}
-    return bool(se_surnames and cand_surnames and (se_surnames & cand_surnames))
+    """True when the SE book and candidate share an author."""
+    return shares_author([a.name for a in se.authors], cand.author_names)
 
 
 def score_candidate(se: SeBook, cand: HardcoverBookMatch) -> float:
     """Combine title and author agreement into a 0..1 confidence."""
     title = _title_score(se.title, cand.title)
-    se_surnames = {surname(a.name) for a in se.authors if surname(a.name)}
-    cand_surnames = {surname(a) for a in cand.author_names if surname(a)}
-    if se_surnames and cand_surnames:
-        author = 1.0 if (se_surnames & cand_surnames) else 0.0
+    se_names = [a.name for a in se.authors if surname(a.name)]
+    cand_names = [a for a in cand.author_names if surname(a)]
+    if se_names and cand_names:
+        author = 1.0 if shares_author(se_names, cand_names) else 0.0
     else:
         # No author info on the candidate — neutral, lean on title alone.
         author = 0.5
