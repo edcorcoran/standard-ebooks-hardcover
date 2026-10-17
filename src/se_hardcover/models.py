@@ -77,6 +77,7 @@ class HardcoverEdition:
     image_url: str | None = None
     edition_format: str | None = None
     edition_information: str | None = None
+    users_count: int = 0  # readers who shelved this edition
     contributions: list[HardcoverContribution] = field(default_factory=list)
 
 

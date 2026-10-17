@@ -104,9 +104,9 @@ def audit_editions(
 ) -> list[Discrepancy]:
     """Fetch publisher editions and produce a list of discrepancies.
 
-    A duplicate edition (a second edition of an SE book that already has one) is
-    reported only as a ``duplicate`` and gets no field checks: it should be
-    merged away by a human, not polished — and correcting its data would only
+    An edition on a duplicate book (an SE book split across two Hardcover books)
+    is reported only as a ``duplicate`` and gets no field checks: its book should
+    be merged away by a human, not polished — and correcting its data would only
     make the duplicate look more legitimate.
     """
     matched = match_editions(client, store, ref)
@@ -142,15 +142,22 @@ def match_editions(
 def find_duplicates(
     matched: list[tuple[HardcoverEdition, SeBook | None]], store: Store
 ) -> dict[str, tuple[HardcoverEdition, list[HardcoverEdition]]]:
-    """Group SE books that more than one Hardcover edition claims to be.
+    """Find SE books whose editions are split across more than one Hardcover book.
 
-    Returns ``{se_url: (canonical, [duplicates])}``. The canonical edition is
-    the one our state DB recorded for that book (we created or verified it),
-    else an edition on the book we recorded, else the oldest (lowest id), which
-    is the one most likely to carry readers. Duplicates arise when another
-    Hardcover user adds an SE edition we already have, or when one book carries
-    several SE editions; there is no merge/delete API, so they can only be
-    reported for a human to merge in the Hardcover UI.
+    Returns ``{se_url: (canonical, [duplicates])}``, where the duplicates are
+    the editions sitting on a *different* book from the canonical one — the
+    other book should be merged into the canonical book in the Hardcover UI
+    (there is no merge/delete API). This typically happens when another
+    Hardcover user creates their own book for an SE title we already cover.
+
+    Several SE editions on the *same* book are deliberately not reported: they
+    are clutter on one book page, not something readers trip over, and not
+    worth pulling a human in for.
+
+    The canonical edition is the one with the most readers — a merge should
+    never point readers away from where they already are. Ties go to the
+    edition our state DB recorded, then one on the book we recorded, then the
+    oldest.
     """
     by_se: dict[str, list[HardcoverEdition]] = {}
     for ed, se in matched:
@@ -159,36 +166,31 @@ def find_duplicates(
 
     groups: dict[str, tuple[HardcoverEdition, list[HardcoverEdition]]] = {}
     for se_url, eds in by_se.items():
-        if len(eds) < 2:
+        if len({e.book_id for e in eds}) < 2:
             continue
         row = store.processed_row(se_url) or {}
-        eds = sorted(eds, key=lambda e: e.id)
-        canonical = (
-            next((e for e in eds if e.id == row.get("hardcover_edition_id")), None)
-            or next((e for e in eds if e.book_id == row.get("hardcover_book_id")), None)
-            or eds[0]
-        )
-        groups[se_url] = (canonical, [e for e in eds if e is not canonical])
+        canonical = max(eds, key=lambda e: (
+            e.users_count,
+            e.id == row.get("hardcover_edition_id"),
+            e.book_id == row.get("hardcover_book_id"),
+            -e.id,
+        ))
+        groups[se_url] = (canonical, [e for e in eds if e.book_id != canonical.book_id])
     return groups
 
 
 def _duplicate_discrepancy(
     dup: HardcoverEdition, canonical: HardcoverEdition, se: SeBook | None
 ) -> Discrepancy:
-    same_book = dup.book_id == canonical.book_id
-    problem = (
-        "Duplicate SE edition on the same book" if same_book
-        else "Duplicate SE edition on a different book"
-    )
     return Discrepancy(
         dup.id,
         f"https://hardcover.app/books/{dup.book_slug}",
         se.se_url if se else None,
         "duplicate",
-        problem,
-        f"edition {dup.id} on book {dup.book_id}",
+        "SE book split across two Hardcover books",
+        f"edition {dup.id} on book {dup.book_id} (readers: {dup.users_count})",
         f"merge into https://hardcover.app/books/{canonical.book_slug} "
-        f"(edition {canonical.id})",
+        f"(edition {canonical.id}, readers: {canonical.users_count})",
         "manual",
     )
 

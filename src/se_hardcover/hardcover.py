@@ -258,7 +258,7 @@ class HardcoverClient:
               editions(where: {publisher_id: {_eq: $pid}}, order_by: {id: asc}) {
                 id book_id title subtitle release_date
                 reading_format_id language_id publisher_id
-                isbn_10 isbn_13 asin image_id
+                isbn_10 isbn_13 asin image_id users_count
                 edition_format edition_information
                 reading_format { format }
                 image { url }
@@ -502,6 +502,7 @@ def _edition_from_row(r: dict[str, Any]) -> HardcoverEdition:
         image_url=(r.get("image") or {}).get("url"),
         edition_format=r.get("edition_format"),
         edition_information=r.get("edition_information"),
+        users_count=r.get("users_count") or 0,
         contributions=contribs,
     )
 

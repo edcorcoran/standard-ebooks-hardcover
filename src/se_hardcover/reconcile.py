@@ -8,8 +8,8 @@ The automated audit the daemon runs on a cadence. It answers two questions:
 2. **Is the data on the existing SE editions accurate, and do they all
    correspond to real SE books?** (integrity) — it audits every edition under the
    publisher, auto-fixes the mechanical problems, and flags anything needing a
-   human (an edition that matches no SE book, or a duplicate edition of an SE
-   book that already has one).
+   human (an edition that matches no SE book, or an SE book split across two
+   Hardcover books).
 
 A Discord summary is sent only when something actually happened, so a healthy
 catalog stays quiet.
@@ -131,8 +131,8 @@ def _notify(notifier: Notifier, summary: dict, triage: dict, new_duplicates: lis
             lines.append(f"    {d.hardcover_url} ({d.current})")
     if new_duplicates:
         lines.append(
-            f"• ⚠️ {len(new_duplicates)} new duplicate SE edition(s) "
-            f"({summary['duplicates']} in total) — merge in Hardcover:"
+            f"• ⚠️ {len(new_duplicates)} SE edition(s) newly found on a duplicate "
+            f"Hardcover book ({summary['duplicates']} in total) — merge the books:"
         )
         for d in new_duplicates[:10]:
             lines.append(f"    {d.hardcover_url} ({d.current}) → {d.proposed}")

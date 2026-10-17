@@ -5,7 +5,7 @@ Subcommands:
   catalog      build/refresh the local Standard Ebooks catalog cache
   audit        report discrepancies on existing Hardcover editions (writes CSV)
   apply-fixes  execute approved rows from an audit CSV
-  duplicates   list SE books with more than one Hardcover edition (read-only)
+  duplicates   list SE books split across two Hardcover books (read-only)
   backfill     add editions for catalog books not yet on Hardcover
   review       list / resolve the review queue
   watch        daemon: poll the Atom feed and sync new releases
@@ -142,10 +142,10 @@ def audit(
 
 @app.command()
 def duplicates():
-    """List SE books with more than one Hardcover edition, for merging in the UI.
+    """List SE books split across two Hardcover books, for merging in the UI.
 
     Read-only: the API has no merge or delete, so this only tells a librarian
-    which books/editions to merge by hand.
+    which books to merge by hand (into the one whose SE edition has most readers).
     """
     client = _client(dry_run=True)
     with _store() as store:
@@ -156,13 +156,11 @@ def duplicates():
         for se_url, (canonical, dups) in sorted(groups.items()):
             typer.echo(f"\n{se_url}")
             typer.echo(f"  keep   https://hardcover.app/books/{canonical.book_slug} "
-                       f"(edition {canonical.id})")
+                       f"(edition {canonical.id}, readers: {canonical.users_count})")
             for d in dups:
-                where = "same book" if d.book_id == canonical.book_id else "other book"
                 typer.echo(f"  merge  https://hardcover.app/books/{d.book_slug} "
-                           f"(edition {d.id}, {where})")
-        n = sum(len(d) for _, d in groups.values())
-        typer.echo(f"\n{len(groups)} SE book(s) with duplicates; {n} edition(s) to merge.")
+                           f"(edition {d.id}, readers: {d.users_count})")
+        typer.echo(f"\n{len(groups)} SE book(s) split across Hardcover books.")
 
 
 @app.command(name="apply-fixes")

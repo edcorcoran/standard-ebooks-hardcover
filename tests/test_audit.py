@@ -210,25 +210,37 @@ def _sf_edition(id, book_id, slug, author="Akutagawa Ryūnosuke", **over):
                     book_author_names=[author], release_date="2026-03-19", **over)
 
 
-def test_find_duplicates_prefers_recorded_edition(tmp_path):
+def test_find_duplicates_keeps_most_read_edition(tmp_path):
     from se_hardcover.audit import find_duplicates
 
     with Store(tmp_path / "s.sqlite3") as store:
         se_url = _short_fiction_store(store)
+        store.mark_processed(se_url, "added", book_id=50, edition_id=500)
         index = build_catalog_index(store)
         ours = _sf_edition(500, 50, "short-fiction-2026")
-        theirs = _sf_edition(900, 90, "short-fiction-x", author="Ryūnosuke Akutagawa")
-        older = _sf_edition(100, 50, "short-fiction-2026")
-        matched = [(e, match_edition_to_catalog(e, index)) for e in (theirs, ours, older)]
+        theirs = _sf_edition(900, 90, "short-fiction-x", author="Ryūnosuke Akutagawa",
+                             users_count=1)
+        matched = [(e, match_edition_to_catalog(e, index)) for e in (ours, theirs)]
 
-        # Nothing recorded: the oldest edition is kept.
+        # Readers beat our own record: never point a merge away from readers.
         canonical, dups = find_duplicates(matched, store)[se_url]
-        assert canonical.id == 100 and {d.id for d in dups} == {500, 900}
+        assert canonical.id == 900 and [d.id for d in dups] == [500]
 
-        # Our recorded edition wins over an older one.
-        store.mark_processed(se_url, "added", book_id=50, edition_id=500)
+        # On a tie, the edition we recorded is kept.
+        theirs.users_count = 0
         canonical, dups = find_duplicates(matched, store)[se_url]
-        assert canonical.id == 500 and {d.id for d in dups} == {100, 900}
+        assert canonical.id == 500 and [d.id for d in dups] == [900]
+
+
+def test_find_duplicates_ignores_extra_editions_on_one_book(tmp_path):
+    from se_hardcover.audit import find_duplicates
+
+    with Store(tmp_path / "s.sqlite3") as store:
+        _short_fiction_store(store)
+        index = build_catalog_index(store)
+        eds = [_sf_edition(i, 50, "short-fiction-2026") for i in (100, 101, 102)]
+        matched = [(e, match_edition_to_catalog(e, index)) for e in eds]
+        assert find_duplicates(matched, store) == {}
 
 
 def test_audit_reports_duplicate_without_field_checks(tmp_path):
@@ -249,7 +261,7 @@ def test_audit_reports_duplicate_without_field_checks(tmp_path):
         assert len(d) == 1
         assert d[0].edition_id == 900 and d[0].field == "duplicate"
         assert d[0].fix_kind == "manual"
-        assert d[0].problem == "Duplicate SE edition on a different book"
+        assert d[0].problem == "SE book split across two Hardcover books"
         assert "short-fiction-2026" in d[0].proposed
 
 
